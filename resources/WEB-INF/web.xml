@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<!--
+Just for referrence, this is the order that elements can be listed.
+
+<!ELEMENT web-app (icon?, display-name?, description?, distributable?,
+context-param*, servlet*, servlet-mapping*, session-config?,
+mime-mapping*, welcome-file-list?, error-page*, taglib*,
+resource-ref*, security-constraint*, login-config?, security-role*,
+env-entry*, ejb-ref*)>
+-->
+<web-app>
+    <display-name>My Web Application</display-name>
+    <description>This is version X.X of an application to perform a wild and wonderful task, based on servlets and JSP pages. It was written by Dave Developer (dave@mycompany.com), who should be contacted for more information.</description>
+
+    <!--
+    Context initialization parameters that define shared
+    String constants used within your application, which
+    can be customized by the system administrator who is
+    installing your application.  The values actually
+    assigned to these parameters can be retrieved in a
+    servlet or JSP page by calling:
+
+     String value =
+       getServletContext().getInitParameter("name");
+
+    where "name" matches the <param-name> element of
+    one of these initialization parameters.
+
+    You can define any number of context initialization
+    parameters, including zero.
+    -->
+
+    <context-param>
+        <param-name>webmaster</param-name>
+        <param-value>myaddress@mycompany.com</param-value>
+        <description>The EMAIL address of the administrator to whom questions and comments about this application should be addressed.</description>
+    </context-param>
+
+    <!-- ADMIN SERVLETS -->
+    <servlet>
+        <servlet-name>Admin_AdminUser</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.AdminUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Artist</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ArtistServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Royalties</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.RoyaltiesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Category</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.CategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Content</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ContentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Company</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.CompanyServlet</servlet-class>
+    </servlet>
+	<servlet>
+	    <servlet-name>Admin_Homepage</servlet-name>
+	    <servlet-class>com.approachingpi.store.servlet.admin.HomepageServlet</servlet-class>
+	</servlet>
+    <servlet>
+        <servlet-name>Admin_ImageEdit</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ImageEditServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_ImageAssociate</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ImageAssociateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_ImageUpload</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ImageUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Inventory</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.InventoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Main</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.MainServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Order</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_OrderInvoice</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.OrderInvoiceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Price</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.PriceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_Product</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.ProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_QuickCharge</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.QuickChargeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Admin_User</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.admin.UserServlet</servlet-class>
+    </servlet>
+	<servlet>
+	    <servlet-name>Application</servlet-name>
+	    <servlet-class>com.approachingpi.store.servlet.ApplicationServlet</servlet-class>
+	</servlet>
+    <servlet>
+        <servlet-name>Brands</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.BrandServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Cart</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.CartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeUserInfo</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.ChangeUserInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Content</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.ContentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Custom</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.CustomServlet</servlet-class>
+    </servlet>
+	<servlet>
+	    <servlet-name>ForgotPassword</servlet-name>
+	    <servlet-class>com.approachingpi.store.servlet.ForgotPasswordServlet</servlet-class>
+	</servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Main</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.MainServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderStatus</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.OrderStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Paypal</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.PaypalIPNServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductImage</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.ProductImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MailingList</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.MailingListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Wholesale</servlet-name>
+        <servlet-class>com.approachingpi.store.servlet.WholesaleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Main</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_AdminUser</servlet-name>
+        <url-pattern>/admin/AdminUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Artist</servlet-name>
+        <url-pattern>/admin/Artist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Royalties</servlet-name>
+        <url-pattern>/admin/Royalties</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Category</servlet-name>
+        <url-pattern>/admin/Category</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Company</servlet-name>
+        <url-pattern>/admin/Company</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Content</servlet-name>
+        <url-pattern>/admin/Content</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>Admin_Homepage</servlet-name>
+	    <url-pattern>/admin/Homepage</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_ImageAssociate</servlet-name>
+        <url-pattern>/admin/ImageAssociate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_ImageEdit</servlet-name>
+        <url-pattern>/admin/ImageEdit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_ImageUpload</servlet-name>
+        <url-pattern>/admin/ImageUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Inventory</servlet-name>
+        <url-pattern>/admin/Inventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/admin/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Main</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Main</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Order</servlet-name>
+        <url-pattern>/admin/Order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_OrderInvoice</servlet-name>
+        <url-pattern>/admin/OrderInvoice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Price</servlet-name>
+        <url-pattern>/admin/Price</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_Product</servlet-name>
+        <url-pattern>/admin/Product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_QuickCharge</servlet-name>
+        <url-pattern>/admin/qc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Admin_User</servlet-name>
+        <url-pattern>/admin/User</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>Application</servlet-name>
+	    <url-pattern>/application</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Brands</servlet-name>
+        <url-pattern>/artists/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Brands</servlet-name>
+        <url-pattern>/brands/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Brands</servlet-name>
+        <url-pattern>/categories/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Brands</servlet-name>
+        <url-pattern>/allproducts/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Brands</servlet-name>
+        <url-pattern>/search/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cart</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeUserInfo</servlet-name>
+        <url-pattern>/changeuserinfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Content</servlet-name>
+        <url-pattern>/content/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Custom</servlet-name>
+        <url-pattern>/custom/*</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+	    <servlet-name>ForgotPassword</servlet-name>
+	    <url-pattern>/forgotpassword</url-pattern>
+	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MailingList</servlet-name>
+        <url-pattern>/mailinglist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Paypal</servlet-name>
+        <url-pattern>/paypal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductImage</servlet-name>
+        <url-pattern>/productimages/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderStatus</servlet-name>
+        <url-pattern>/orderstatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Wholesale</servlet-name>
+        <url-pattern>/wholesale/*</url-pattern>
+    </servlet-mapping>
+
+
+   <session-config>
+      <session-timeout>90</session-timeout>
+   </session-config>
+   <welcome-file-list>
+      <welcome-file>index.jsp</welcome-file>
+      <welcome-file>index.html</welcome-file>
+   </welcome-file-list>
+   <!-- Struts Tag Library Descriptors -->
+   <!--
+   <taglib>
+      <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
+      <taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
+   </taglib>
+   <taglib>
+      <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
+      <taglib-location>/WEB-INF/struts-html.tld</taglib-location>
+   </taglib>
+   <taglib>
+      <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
+      <taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
+   </taglib>
+   -->
+
+
+    <resource-ref>
+        <description>
+        </description>
+        <res-ref-name>jdbc/MainDs</res-ref-name>
+        <res-type>net.sourceforge.jtds.jdbc.Driver</res-type>
+        <!--<res-type>javax.sql.DataSource</res-type>-->
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <!-- Define a Security Constraint on this Application -->
+    <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Entire Application</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+       <role-name>distroy</role-name>
+    </auth-constraint>
+    </security-constraint>
+
+
+    <!-- Define the Login Configuration for this Application -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Distroy Store</realm-name>
+    </login-config>
+
+    <security-role>
+        <description>Beta Site</description>
+        <role-name>distroy</role-name>
+    </security-role>
+
+</web-app>
+

@@ -1,0 +1,29 @@
+SQL CHANGES
+
+paymentTransaction - added txComment
+
+tbPayment added:
+	amountSettledSubtotal
+	amountSettledTax
+	amountSettledShipping
+
+tbMailingList
+	vcReferral
+	btSubscribed
+	dtPromotionSent
+	dtPromotionClaimed
+	dtPromotionUsed
+	moPromotionUsed
+	
+
+new table:
+tbOrderComment
+	inId
+	inOrderId
+	inUserId
+	dtStamp
+	boPrivate
+	txBody
+
+
+

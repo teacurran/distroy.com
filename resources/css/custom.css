@@ -1,0 +1,665 @@
+
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+color: #000000;
+text-decoration: none;
+}
+
+body, td, p	{
+    font-size: 12px;
+	color: #000000;
+	/* background-color: #FFFFFF; */
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+	text-align: left;
+}
+
+body {
+  margin: 0px auto 0px auto;
+}
+
+.breadCrumb {
+    font-size: 12px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    background-color: #FFFFFF;
+    color: #000000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.breadCrumbProduct {
+color: #670001;
+}
+
+.button {
+    font-size:12px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    background-color: #2E3192;
+    color: #5CB0F1;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    height: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.buttonLink {
+    font-size:12px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    background-color: #2E3192;
+    color: #5CB0F1;
+    text-decoration: none;
+}
+
+.catalog {
+    background-color: #FFFFFF;
+    color: #000000;
+    text-align: left;
+    vertical-align: top;
+    padding: 10px;
+    padding-top: 50px;
+    font-size: 12px;
+}
+
+.content {
+    background-color: #FFFFFF;
+    color: #000000;
+    position: absolute;
+    top: 100px;
+    right: 10px;
+    text-align: left;
+    vertical-align: top;
+    width: 250px;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.contentError, .contentMessage {
+    background-color: yellow;
+    color: #000000;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 25px;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.contentImages {
+    background-color: #FFFFFF;
+    color: #000000;
+    text-align: center;
+  width: 340px;
+  vertical-align: top;
+  padding: 10px;
+    border-right: 1px dotted;
+    border-color: #818181;
+}
+
+.contentText {
+    background-color: #FFFFFF;
+    color: #000000;
+    text-align: left;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.contentTextBold {
+    background-color: #FFFFFF;
+    color: #670001;
+    font-weight:bold;
+    text-align: left;
+    vertical-align: top;
+}
+
+.content a:hover, .contentText a:hover, .contentTextBold a:hover {
+text-decoration: none;
+border-bottom:1px solid #670001;
+}
+
+.contentWithLeftNav {
+  width: 654px;
+  position: absolute;
+  left: 143px;
+  border-top: 1px solid;
+  border-color: #000000;
+  background-color: #FFFFFF;
+}
+
+.contentWithoutLeftNav {
+  width: 774px;
+  position: absolute;
+  left: 23px;
+  border-top: 1px solid;
+  border-color: #000000;
+  background-color: #FFFFFF;
+}
+
+.foot {
+    background-color: #FFFFFF;
+    color: #000000;
+    position: absolute;
+    left: 23px;
+    bottom: 10px;
+    width: 754px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    padding-top: 20px;
+    font-size: 12px;
+    border-top: 1px solid;
+    border-color: #000000;
+}
+
+.head {
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    /* background-color: #FFFFFF; */
+    color: #000000;
+    padding-top: 10px;
+    padding-left: 40px;
+    width: 750px;
+    height: 50px;
+}
+
+.headFloat {
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    color: #000000;
+	height: 178px;
+	width: 250px;
+	position: absolute;
+	top: 0px;
+	right: 20px;
+	z-index: 80;
+}
+
+html, body {
+height: 100%;
+}
+
+.imageSelected {
+    border-style: solid;
+    border-width: 3px;
+    border-color: #00AEEF;
+}
+
+.imageNotSelected {
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+}
+
+input.button  {
+    font-size: 12px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    background-color: #670001;
+    color: #FFFFFF;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #670001;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    height: 20px;
+    /* filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#9A0002',EndColorStr='#000000'); */
+}
+
+input.button:hover {
+    background-color: #EFB0B0;
+} 
+
+input.text {
+    padding-left: 5px;
+    padding-bottom: 1px;
+    padding-top: 2px;
+    background-position: left top;
+    background-image: url("/img/input_shadow_3.gif");
+    background-repeat: no-repeat
+}
+
+.inputLabel {
+    font-size: 12px;
+	color: #000000;
+	background-color: #EEEEEE;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: text-top;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: none;
+    border-color: #F1F1F1;
+    border-width: 1px;
+}
+.inputLabelDisabled {
+    font-size: 12px;
+	color: #AAAAAA;
+	background-color: #EEEEEE;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: text-top;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+
+.inputLabelError {
+    font-size: 12px;
+	color: #000000;
+	background-color: #EE0000; /* TODO this should be red, we might need to fix it */
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: text-top;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+
+.input {
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+
+.label {
+    font-size: 12px;
+	color: #000000;
+    padding: 3px;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+}
+
+#leftNav {
+    font-size: 12px;
+    font-family: Arial, Geneva, Verdana,Helvetica, Swiss, SunSans-Regular;
+    background-color: #9A9C99;
+    color: #FFFFFF;
+    border-top: 1px solid;
+    border-color: #000000;
+    position: absolute;
+    left: 23px;
+    width: 110px;  
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    height: 75%;
+    vertical-align: top;
+}
+
+.matrix {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    padding: 10px;
+}
+
+.matrixHead {
+    font-size: 12px;
+    color: #FFFFFF;
+    background-color: #9A9C99;
+    font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    vertical-align: text-top;
+}
+
+.matrixRow {
+    font-size: 12px;
+	background-color: #FFFFFF;
+    color: #000000;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-bottom-color: #DDDDDD;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRowAlternate {
+    font-size: 12px;
+	background-color: #F1F1F1;
+    color: #000000;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-bottom-color: #DDDDDD;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRowOver {
+    font-size: 12px;
+	background-color: #EFB0B0;
+    color: #000000;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-bottom-color: #000000;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRowSelected {
+    font-size: 12px;
+	background-color: #EFB0B0;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-top-color: #B3CBE8;
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.messageCell {
+	background-color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #670001;
+    border-width: 5px;
+}
+.messageCellText {
+	background-color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+}
+
+.pageHead {
+    font-size: 22px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    background-color: #FFFFFF;
+    color: #670001;
+    padding: 25px;
+    /* border-top: 1px solid;
+    border-color: #000000;
+     border-style: solid; */
+    /* filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#9A0002',EndColorStr='#000000'); */
+}
+
+select, input  {
+    border: 1px;
+    border-color: #999999;
+    border-style: solid;
+    background-color: #FFFFFF;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: x-small; background-position: center center;
+    color: #000000;
+}
+
+#shadow1 {
+	background-image:url("/img/drop_shadow.png");
+	width: 800px;
+        margin:0 auto;
+        height: 1200px;
+}
+
+.shadow2 {
+	position: relative;
+	left: -10px;
+	right: -10px;
+        height: 100%;
+}
+
+#showThumbString {
+    background-color: #FFFFFF;
+    color: #E2E1E2;
+    text-align: center;
+    font-size: 12px;
+    line-height: 30px;
+
+}
+
+.showThumbStringBold {
+    color: #9C9B9C;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sectionSpace {
+    background-color: #FFFFFF;
+}
+
+.sectionSpace a {
+    color: white;
+}
+
+.size {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-size: 12px;
+}
+
+.sizeDisabled {
+    background-color: #FFFFFF;
+    color: #B1B1B1;
+    font-size: 12px;
+}
+
+.sizeOver {
+    background-color: #EFB0B0;
+    color: #000000;
+    font-size: 12px;
+    border: none;
+}
+
+table { border-collapse: collapse}
+
+.tabs{
+padding: 3px 0;
+margin-left: 0;
+margin-top: 1px;
+margin-bottom: 0;
+font-weight: normal;
+font-size: 12px;
+font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+list-style-type: none;
+text-align: left; /*set to left, center, or right to align the menu as desired*/
+}
+
+.tabs li{
+display: inline;
+margin: 0;
+}
+
+.tabs li a{
+text-decoration: none;
+position: relative;
+z-index: 1;
+padding: 3px 7px;
+margin-right: 3px;
+border: 1px solid #778;
+color: #2d2b2b;
+background-color: #CCCCCC;
+}
+
+.tabs li a:visited{
+color: #2d2b2b;
+}
+
+.tabs li a:hover{
+text-decoration: none;
+color: #2d2b2b;
+}
+
+.tabs li a.selected{ /*selected main tab style */
+position: relative;
+top: 1px;
+background-color: #EEEEEE;
+border-bottom-color: #EEEEEE;
+font-weight: bold;
+}
+
+.tabs li a.selected:hover{ /*selected main tab style */
+text-decoration: none;
+font-weight: bold;
+}
+
+.tabContent {
+    background-color: #EEEEEE;
+    border: 1px solid #333333;
+    padding: 10px;
+}
+
+textarea {
+    border: 1px;
+    border-color: #999999;
+    border-style: solid;
+    background-color: #FFFFFF;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: x-small; background-position: center center;
+    color: #000000;
+    padding-left: 5px;
+    padding-bottom: 1px;
+    padding-top: 2px;
+    background-position: left top;
+    background-image: url("/img/input_shadow_3.gif");
+    background-repeat: no-repeat
+}
+
+.topLinks {
+    text-decoration: none;
+    font-size:12px;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    color: #000000;
+    font-weight: bold;
+    text-align:left;
+    vertical-align: middle;
+    width: 750px;
+    height: 10px;
+    padding: 10px;
+    padding-left:40px;
+}
+
+/* new menu styles below */
+
+.vertical_accordion_toggle {
+  display: block;
+  background: #9A9C99;
+  height: 25px;
+  line-height: 25px;
+  color: #ffffff;
+  font-weight: normal;
+  font-family: Arial, Geneva, Verdana,Helvetica, Swiss, SunSans-Regular;
+  text-decoration: none;
+  outline: none;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #9A9C99;
+  cursor: pointer;
+  margin: 0 0 0 0;
+}
+
+.vertical_accordion_toggle_active {
+  background: #9A9C99;
+  color: #670001;
+  border-bottom: 1px solid #9A9C99;
+}
+
+.vertical_accordion_notoggle {
+  display: block;
+  height: 25px;
+  background: #9A9C99;
+/* padding: 0 10px 0 10px; */
+  line-height: 25px;
+  color: #ffffff;
+  font-family: Arial, Geneva, Verdana,Helvetica, Swiss, SunSans-Regular;
+  text-decoration: none;
+  outline: none;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #9A9C99;
+  cursor: pointer;
+  margin: 0 0 0 0;
+}
+
+.vertical_accordion_notoggle_active a {
+  background: #9A9C99;
+  color: #670001;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.vertical_accordion_notoggle a {
+  color: #ffffff;
+  text-decoration: none;
+  }
+
+.vertical_accordion_notoggle a:hover {
+  color: #EADC34;
+  border: none;
+}
+
+.vertical_accordion_content {
+  font-family: Arial, Geneva, Verdana,Helvetica, Swiss, SunSans-Regular;
+  background-color: #9A9C99;
+  color: #444444;
+  overflow: hidden;
+  padding: 5px 10px;
+}
+
+.vertical_accordion_content a:hover {
+  color: #EADC34;
+  border: none;
+}
+
+.vertical_accordion_content_this {
+  color: #670001;
+}
+
+#vertical_nested_container {
+ /* margin: 20px auto 20px auto; 
+  width: 100px; */
+}
+

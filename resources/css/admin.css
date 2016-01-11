@@ -1,0 +1,300 @@
+
+table {border-collapse: collapse}
+
+select, textarea, input  {
+    border: 1px;
+    border-color: #999999;
+    border-style: solid;
+    background-color: #FFFFFF;
+    /* font-family: Verdana, Arial, Helvetica, sans-serif; */
+    color: #000000;
+}
+
+a {text-decoration: none}
+
+body, td, p	{
+    font-size: 12px;
+	color: #000000;
+	/* background-color: #FFFFFF; */
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+}
+
+.checkbox {
+    background-color: transparent;
+    border: none;
+}
+
+.dialog {
+    background-color: white;
+    z-index: 10;
+    visibility: hidden;
+    position: absolute;
+}
+.dialog .border {
+    position: relative;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border: solid 1px black;
+    z-index: 4;
+}
+.dialog .ieMask {
+    background-color: white;
+    display: block;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    height:100%;
+    width:100%;
+    z-index:3;
+    filter:alpha(opacity=0);
+}
+.dialog .text {
+    width: 150px;
+}
+.dialog .header {
+    text-align: right;
+    height: 20px;
+    background-color: #c9c9c9;
+    padding-top: 4px;
+    padding-right: 5px;
+    padding-bottom: 4px;
+}
+.dialog .body {
+    padding: 11px;
+}
+.dialog .body .content {
+    font-weight: bold;
+    height: 120px;
+    font-size: 13px;
+}
+.dialog .footer {
+    text-align: right;
+    padding-right: 20px;
+}
+
+#dialogAuth {
+    width: 350px;
+    height: 250px;
+}
+
+#dialogCapture {
+    width: 350px;
+    height: 250px;
+}
+
+.errors {
+    background-color: #FFFF00;
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px black;
+    color: red;
+    font-weight: bold;
+}
+
+.label {
+    font-size: 12px;
+	color: #000000;
+    padding: 3px;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+}
+
+.inputLabel {
+    font-size: 12px;
+	color: #000000;
+	background-color: #EEEEEE;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: text-top;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+.inputLabelDisabled {
+    font-size: 12px;
+	color: #AAAAAA;
+	background-color: #EEEEEE;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: text-top;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-width: 1px;
+}
+
+.input {
+    border-style: solid;
+    border-color: #999999;
+    border-width: 1px;
+}
+
+.inputAltered {
+    border-style: solid;
+    background-color: #FEFFAF;
+    border-color: #999999;
+    border-width: 1px;
+}
+
+.matrix {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.matrixHead {
+    font-size: 12px;
+	color: #000000;
+	background-color: #7DA7D9;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixTitle {
+    font-size: 18px;
+	color: #000000;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    font-weight: bold;
+    border-color: #000000;
+    border-style: none;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 0px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRow {
+    font-size: 12px;
+	background-color: #FFFFFF;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-top-color: #DDDDDD;
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRowAlternate {
+    font-size: 12px;
+	background-color: #F1F1F1;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-top-color: #DDDDDD;
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.matrixRowSelected {
+    font-size: 12px;
+	background-color: #B3CBE8;
+	font-family: Verdana, Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+	font-weight: normal;
+    border-top-color: #B3CBE8;
+    border-top-style: solid;
+    border-top-width: 1px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.messageCell {
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    padding-top:20px;
+    padding-bottom:20px;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.messageCellPopup {
+	background-color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.messages {
+    /* C2DFEA - D4EDF6 */
+    background-color: #FDFF00;
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px black;
+    font-weight: bold;
+}
+
+.pageHead {
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Verdana,Helvetica, Arial, Geneva, Swiss, SunSans-Regular;
+}
+
+.toolbar {
+    font-weight: bold;
+}
+.toolbar img {
+    vertical-align: middle;
+}
+
+.imageSelected {
+    border-style:solid;
+    border-width:3px;
+    border-color:#00AEEF;
+}
+
+.imageNotSelected {
+    border-style:solid;
+    border-width:3px;
+    border-color:white;
+}
+
+.contentSelected {
+    border-style:solid;
+    border-width:3px;
+    border-color:#00AEEF;
+}
+.contentNotSelected {
+    border-style:solid;
+    border-width:1px;
+    border-color:black;
+}
+
+

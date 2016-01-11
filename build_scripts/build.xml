@@ -1,0 +1,63 @@
+<project name="Distroy" default="dist" basedir="../">
+
+    <property file="build_scripts/build.properties"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${j2ee.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init" description="compile the source " >
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac destdir="${build.dir}" compiler="modern"  debuglevel="lines,vars,source" debug="on" verbose="no">
+            <classpath refid="classpath"/>
+            <src>
+                <pathelement path="${src.dir}"/>
+            </src>
+        </javac>
+    </target>
+
+    <target name="document" depends="compile" description="generate the javadoc">
+        <mkdir dir="${doc.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}" Private="Yes" packagenames="*">
+        </javadoc>
+    </target>
+
+    <target name="web-dist-exploded" depends="compile">
+        <copy todir="${exploded.dir}">
+            <fileset dir="${resources.dir}" includes="**/*"/>
+        </copy>
+    </target>
+
+    <target name="dist" depends="compile,web-dist-exploded,document" description="generate the distribution" >
+        <jar jarfile="${dist.dir}/${application_name}-${build.version}.jar" basedir="${build.dir}"/>
+        <jar jarfile="${dist.dir}/${application_name}-${build.version}-doc.jar" basedir="${doc.dir}"/>
+        <war destfile="${dist.dir}/${application_name}-${build.version}.war"
+            webxml="${exploded.dir}/WEB-INF/web.xml"
+            basedir="${exploded.dir}"
+        />
+    </target>
+
+    <target name="clean" description="clean up" >
+        <delete>
+            <fileset dir="${build.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </delete>
+    </target>
+</project>
+
+
+
