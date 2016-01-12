@@ -23,6 +23,16 @@
 
 	<dependencies>
 
+        <!-- local -->
+		<dependency>
+			<groupId>com.verisign</groupId>
+			<artifactId>verisign</artifactId>
+			<version>1.0</version>
+			<systemPath>${project.basedir}/./lib/Verisign.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+
+
 		<!-- Provided -->
 		<dependency>
 			<groupId>net.sourceforge.jtds</groupId>

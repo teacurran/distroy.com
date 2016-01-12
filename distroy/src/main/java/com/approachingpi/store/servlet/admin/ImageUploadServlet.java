@@ -3,7 +3,7 @@
  * User: terrence
  * Date: Jul 12, 2004
  * Time: 9:22:44 PM
- * To change template for new class use 
+ * To change template for new class use
  * Code Style | Class Templates options (Tools | IDE Options).
  */
 package com.approachingpi.store.servlet.admin;
@@ -13,10 +13,8 @@ import com.approachingpi.util.MessageBean;
 import com.approachingpi.util.ImageInfo;
 import com.approachingpi.store.catalog.Image;
 import com.approachingpi.store.catalog.Product;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+import com.sun.imageio.plugins.jpeg.JPEGImageWriter;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 
@@ -211,7 +210,7 @@ public class ImageUploadServlet extends PiServlet {
                     imageFileStandard.flush();
                     imageFileThumb.flush();
                 }
-                
+
                 fileEnlarge.delete();
                 fileStandard.delete();
                 fileThumb.delete();
@@ -286,9 +285,14 @@ public class ImageUploadServlet extends PiServlet {
 
         // this is an attempt to get the image quality better than ImageIO writes
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(scaledFile));
-        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-        param.setQuality((float)quality / 100.0f,false);
-        encoder.encode(thumbImage,param);
+        //JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        //JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
+        //param.setQuality((float)quality / 100.0f,false);
+        //encoder.encode(thumbImage,param);
+
+		JPEGImageWriter imageWriter = (JPEGImageWriter) ImageIO.getImageWritersBySuffix("jpeg").next();
+		ImageOutputStream ios = ImageIO.createImageOutputStream(thumbImage);
+		imageWriter.setOutput(ios);
+
     }
 }
