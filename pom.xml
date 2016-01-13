@@ -9,10 +9,19 @@
 
 	<packaging>pom</packaging>
 
+	<scm>
+		<connection>scm:git:https://github.com/teacurran/distroy.com.git</connection>
+		<developerConnection>scm:git:https://github.com/teacurran/distroy.com.git</developerConnection>
+		<url>scm:git:https://github.com/teacurran/distroy.com.git</url>
+	</scm>
+
 	<properties>
 		<!--<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>-->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+
+		<build.number>SNAPSHOT</build.number>
 
 		<version.mysql.connector>5.1.28</version.mysql.connector>
 	</properties>

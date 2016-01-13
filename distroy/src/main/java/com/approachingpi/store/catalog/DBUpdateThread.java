@@ -9,24 +9,24 @@ import com.approachingpi.servlet.PiServlet;
 
 
 public class DBUpdateThread extends Thread {
-    
+
     boolean m_exit = false;
     private static DBUpdateThread m_instance = null;
-    
+
    // Constructor is private, cannot initialize
    private DBUpdateThread()
    {
-       
+
    }
-    
+
     public void run()
    {
        // Thread runs forever unless forceExit is called
        while (!m_exit)
        {
-           Connection con = PiServlet.openConnection("jdbc/MainDs");
-   
-           try {               
+           Connection con = PiServlet.openConnection("java:/datasources/distroy-ds");
+
+           try {
                 PreparedStatement ps = con.prepareStatement("begin " +
                 "drop table tbOrderSummary " +
                 "end " +
@@ -41,7 +41,7 @@ public class DBUpdateThread extends Thread {
                 "AND D.inProductVariationId = V.inId " +
                 "AND V.inProductId = LNK.inProductId " +
                 "GROUP BY D.inId, D.vcOrderId, D.moPriceTotal, O.inStatus, S.vcAbbrev, S.btWholesale, A.inId, D.inQty, D.vcItemDesc, O.dtShipComplete " +
-                "end" 
+                "end"
                 );
         ps.execute();
                         try {
@@ -49,7 +49,7 @@ public class DBUpdateThread extends Thread {
                         } catch (Exception e) { e.printStackTrace(); }
            }
            catch (SQLException sqlex){}
-           
+
            try{
 //sleep for 24 hours (in milliseconds)
            Thread.sleep(86400000) ;
@@ -63,7 +63,7 @@ public class DBUpdateThread extends Thread {
    {
        m_exit = true;
    }
-    
+
    public static synchronized DBUpdateThread getInstance()
    {
        if (m_instance == null)
@@ -72,5 +72,5 @@ public class DBUpdateThread extends Thread {
        }
        return m_instance;
    }
-    
+
 }

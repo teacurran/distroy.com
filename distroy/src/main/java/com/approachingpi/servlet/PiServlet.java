@@ -127,7 +127,7 @@ public class PiServlet extends HttpServlet {
         if (session != null && session.getId() > 0) {
             return session;
         }
-        
+
         //if (session != null) {
         //    System.out.println("SessionId 1:" + session.getId());
         //}
@@ -334,10 +334,10 @@ public class PiServlet extends HttpServlet {
 
         try {
             ctx = new InitialContext();
-            envCtx = (Context) ctx.lookup("java:comp/env");
+            ds = (DataSource) ctx.lookup(dataSource);
             //System.out.println("DS=" + dataSource);
             //System.out.println("DS=" + (envCtx.lookup(dataSource)).getClass().getPackage() + " - " + (envCtx.lookup(dataSource)).getClass().getName());
-            ds = (DataSource)envCtx.lookup(dataSource);
+            //ds = (DataSource)envCtx.lookup(dataSource);
         } catch (Exception e) {
             e.printStackTrace();
         }

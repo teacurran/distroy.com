@@ -28,9 +28,9 @@
     out.println("<b>" + header + "</b>");
     */
     InitialContext initialContext = new InitialContext();
-	Context envCtx=(Context)initialContext.lookup("java:comp/env");
+	//Context envCtx=(Context)initialContext.lookup("java:comp/env");
 
-    DataSource dataSource = (DataSource)envCtx.lookup("jdbc//MainDs");
+    DataSource dataSource = (DataSource)initialContext.lookup("java:/datasources/distroy-ds");
     Connection con = dataSource.getConnection();
     ArrayList allBrands = Brand.getAllBrands(con);
 	ArrayList allArtists = Artist.getAllArtists(con,true,"vcNameDisplay");
@@ -58,26 +58,18 @@
 <% } %>
 
 <link rel="stylesheet" type="text/css" href="<%=strCss%>" />
-<link rel="stylesheet" href="/css/lightbox.css" type="text/css" media="screen" />
-<link rel="stylesheet" type="text/css" href="/css/prototip.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/lightbox.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/prototip.css" />
 
 <%-- <script type="text/javascript" language="javaScript" SRC="/js/menu.js"></script> --%>
-<script type="text/javascript" src="/js/prototype.js"></script>
-<script type='text/javascript' src="/js/prototip.js"></script>
-<script type="text/javascript" src="/js/effects.js"></script>
-<script type="text/javascript" src="/js/accordion.js"></script>
-<script type="text/javascript" src="/js/scriptaculous.js?load=effects,builder"></script>
-<script type="text/javascript" src="/js/lightbox.js"></script>
-<script type="text/javascript" language="javaScript" SRC="/js/util.js"></script>
-<script type="text/javascript" src="/js/tabcontent.js"></script>
-
-/***********************************************
-* Tab Content script v2.2- &copy; Dynamic Drive DHTML code library (www.dynamicdrive.com)
-* This notice MUST stay intact for legal use
-* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
-***********************************************/
-
-</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/prototype.js"></script>
+<script type='text/javascript' src="<%=request.getContextPath()%>/js/prototip.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/effects.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/accordion.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/scriptaculous.js?load=effects,builder"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/lightbox.js"></script>
+<script type="text/javascript" language="javaScript" SRC="<%=request.getContextPath()%>/js/util.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/tabcontent.js"></script>
 
 <script type="text/javascript" language="javascript">
 
@@ -141,7 +133,7 @@ function headerInit() {
 			// Open first one: bottomAccordion.activate($$('#vertical_container .accordion_toggle')[0]);
 
 			// Open second one: topAccordion.activate($$('#horizontal_container .horizontal_accordion_toggle')[2]);
-                        
+
                       nestedVerticalAccordion.activate($$('#vertical_nested_container .vertical_accordion_toggle')[<%=strActivateMenu%>]);
 }
 
@@ -176,7 +168,7 @@ function headerInit() {
         }
         --%>
         <%-- rowspan="<%=navHeight%>" --%>
-    
+
          <% if (boShowNav) { %>
     <!-- start left nav -->
 
@@ -203,7 +195,7 @@ function headerInit() {
             <span class="vertical_accordion_content_this"><%=thisCategory.getName()%></span><br />
         <% } else { %>
             <a href="<%=strBaseUrl%>categories/<%=thisCategory.getId()%>"><%=thisCategory.getName()%></a><br />
-        <% } 
+        <% }
         ArrayList categories2 = thisCategory.getChildren();
         if (categories2.size()>0) { %>
           <div class="vertical_accordion_content">
@@ -214,11 +206,11 @@ function headerInit() {
             <span class="vertical_accordion_content_this"><%=thisCategory2.getName()%></span><br />
         <% } else { %>
             <a href="<%=strBaseUrl%>categories/<%=thisCategory2.getId()%>"><%=thisCategory2.getName()%></a><br />
-        <% } 
+        <% }
         }
         %> </div> <%
     }
- } %>	
+ } %>
 </div>
                                         <span class="vertical_accordion_toggle">SUPPORT</span>
 			                <div class="vertical_accordion_content">
@@ -243,7 +235,7 @@ function headerInit() {
                                         <% } %>
                                         </span>
                                         <span class="vertical_accordion_notoggle"><a href="http://blog.distroy.com/">BLOG</a></span>
-			            </div>					
+			            </div>
                                   </div>
         <div id="mainContainer" class="contentWithLeftNav">
     <% } else { %>
@@ -253,7 +245,7 @@ function headerInit() {
 
 
             <%-- body goes here --%>
-            
+
     <% if (errorBean.getMessageCount() > 0) { %>
         <div class="contentError">
                 <% while (errorBean.hasNext()) { %>

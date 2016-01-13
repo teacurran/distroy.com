@@ -16,9 +16,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<webapp.dir>${project.build.directory}/${project.build.finalName}-exploded.war</webapp.dir>
 	</properties>
 
 	<dependencies>
@@ -155,6 +153,52 @@
 
 	</dependencies>
 
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<timestampFormat>yyyyMMddHHmmssSSS</timestampFormat>
+					<timestampPropertyName>releaseTimestamp</timestampPropertyName>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<artifactId>maven-war-plugin</artifactId>
+
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+
+					<archive>
+						<!-- Note, manifest not written to exploded directory.
+						http://jira.codehaus.org/browse/MWAR-167
+						-->
+						<manifestEntries>
+							<Specification-Title>${project.name}</Specification-Title>
+							<Specification-Version>${project.version}</Specification-Version>
+							<Implementation-Version>${build.number}</Implementation-Version>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+
+					<webappDirectory>${webapp.dir}</webappDirectory>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>Java.Net</id>

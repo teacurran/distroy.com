@@ -19,8 +19,8 @@
     */
 
     InitialContext initialContext = new InitialContext();
-	Context envCtx=(Context)initialContext.lookup("java:comp/env");
-    DataSource dataSource = (DataSource)envCtx.lookup("jdbc//MainDs");
+	//Context envCtx=(Context)initialContext.lookup("java:comp/env");
+    DataSource dataSource = (DataSource)initialContext.lookup("java:/datasources/distroy-ds");
     Connection con = dataSource.getConnection();
 
 %>
@@ -42,7 +42,7 @@
 <script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript" src="/js/tabcontent.js"></script>
 <script type="text/javascript" src="/js/tiny_mce/tiny_mce.js"></script>
-    
+
 </head>
 
 <body bgcolor="#FFFFFF" leftmargin="<%=leftMargin%>" topmargin="<%=topMargin%>" marginwidth="<%=marginWidth%>" marginheight="<%=marginHeight%>"<% if (strOnLoad.length() > 0) { out.print(" onLoad=\"" + strOnLoad + "\""); } %>>

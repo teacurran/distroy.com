@@ -29,22 +29,22 @@ import java.util.Date;
 public class MainServlet extends PiServlet {
 
 
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-	    if (req.getServerName() != null
-                && req.getServerName().indexOf("beta") == -1
-                && req.getServerName().indexOf("dev") == -1 
-                && !req.getServerName().equalsIgnoreCase("www.distroy.com")) {
-		    res.sendRedirect("http://www.distroy.com" + req.getRequestURI());
-		    return;
-	    }
-        doPost(req,res);
-    }
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		//if (req.getServerName() != null
+		//		&& req.getServerName().indexOf("beta") == -1
+		//		&& req.getServerName().indexOf("dev") == -1
+		//		&& !req.getServerName().equalsIgnoreCase("www.distroy.com")) {
+		//	res.sendRedirect("http://www.distroy.com" + req.getRequestURI());
+		//	return;
+		//}
+		doPost(req, res);
+	}
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        super.initPiServlet(req, res);
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		super.initPiServlet(req, res);
 
         /*
-        Connection con = openConnection();
+		Connection con = openConnection();
         Session session = getSession(req,res,con);
 
         PreparedStatement ps;
@@ -59,9 +59,9 @@ public class MainServlet extends PiServlet {
         } catch (Exception e) { e.printStackTrace(); }
         */
 
-        //res.sendRedirect("/blog");
-        req.getRequestDispatcher("/jsp/main.jsp").forward(req, res);
-    }
+		//res.sendRedirect("/blog");
+		req.getRequestDispatcher("/jsp/main.jsp").forward(req, res);
+	}
 
 
 }
