@@ -13,10 +13,13 @@
 		<!--<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>-->
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+
+		<version.mysql.connector>5.1.28</version.mysql.connector>
 	</properties>
 
 	<modules>
 		<module>distroy</module>
+		<module>distroy-db</module>
 	</modules>
 </project>
 

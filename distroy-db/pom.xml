@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.approachingpi.distroy</groupId>
+		<artifactId>distroy-bom</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>distroy-db</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<build.number>SNAPSHOT</build.number>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.maven</groupId>
+				<artifactId>migrations-maven-plugin</artifactId>
+				<version>1.1.2</version>
+				<configuration>
+					<repository>src/main/resources/db/</repository>
+					<output>dist/migration-name.sql</output>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${version.mysql.connector}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
