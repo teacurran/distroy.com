@@ -37,6 +37,8 @@ public class PiServlet extends HttpServlet {
 
     public static final String STORE_DEFAULT            = "DIS";
 
+	public static final String DEFINES_VAR				= "distroy.defines";
+
     Defines defines;
 
     protected void initPiServlet(HttpServletRequest req, HttpServletResponse res) {
@@ -46,13 +48,19 @@ public class PiServlet extends HttpServlet {
         //getAltAttribute(req);
         if (defines == null || PiServlet.getReqBoolean(req,"updatedefines")) {
             log.debug("reloading defines.");
-            String filePath = getServletContext().getRealPath("/");
-            if (filePath != null) {
-                // trim off the ".\"
-                if (filePath.substring(filePath.length() - 2, filePath.length()).equals(".\\")) {
-                    filePath = filePath.substring(0, filePath.length() - 2);
-                }
-            }
+
+			String filePath;
+			if (System.getProperty(DEFINES_VAR) != null) {
+				filePath = System.getProperty(DEFINES_VAR);
+			} else {
+				filePath = getServletContext().getRealPath("/");
+				if (filePath != null) {
+					// trim off the ".\"
+					if (filePath.substring(filePath.length() - 2, filePath.length()).equals(".\\")) {
+						filePath = filePath.substring(0, filePath.length() - 2);
+					}
+				}
+			}
             log.debug("defines filepath:" + filePath);
             defines = new Defines(filePath);
         }

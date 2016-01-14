@@ -46,16 +46,22 @@ public class Defines extends Properties {
         if (path == null) {
             path = "";
         }
-        if (path.length() >= 1) {
-            if (!path.substring(path.length() - 1, path.length()).equals(File.separator)) {
-                    path += File.separator;
-            }
-        }
 
-        File propertyFile;
-        FileInputStream inputStream;
+		String fileUri;
+		File propertyFile;
+		FileInputStream inputStream;
 
-        String fileUri = path + INF_FOLDER + File.separator + "defines.properties";
+		if (new File(path).isDirectory()) {
+			if (path.length() >= 1) {
+				if (!path.substring(path.length() - 1, path.length()).equals(File.separator)) {
+						path += File.separator;
+				}
+			}
+			fileUri = path + INF_FOLDER + File.separator + "defines.properties";
+		} else {
+			fileUri = path;
+		}
+
         log.debug("defines uri:" + fileUri);
 
         try {
