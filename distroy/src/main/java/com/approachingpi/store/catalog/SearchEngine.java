@@ -135,39 +135,34 @@ public class SearchEngine {
     }
 
     public String getSql() {
-        String linkVariation = "*=";
-        String linkBrand = "*=";
+        String linkVariation = "LEFT OUTER JOIN";
+        String linkBrand = "LEFT OUTER JOIN";
         String whereAnd = "WHERE";
 
         if (getVariationRequired()) {
-            linkVariation = "=";
+            linkVariation = "JOIN";
         }
 
-        StringBuffer buffer = new StringBuffer(2000);
-        buffer.append("SELECT P.inId AS P_inId, PV.inId AS PV_inId, B.inId AS B_inId, P.vcSku AS P_vcSku, \n");
-        buffer.append("P.vcName, P.vcSku, P.btActiveForRetail, P.btActiveForWholesale, P.btTaxable, P.inBrandId, P.dtCreated, P.dtModified, P.dtInStock, P.txDesc, P.txTextDescription,\n");
-        buffer.append("PV.*, \n");
-        buffer.append("B.vcName AS B_vcName, B.vcLogo AS B_vcLogo ");
-        buffer.append("FROM tbProduct P, tbProductVariation PV, tbBrand B \n");
+        StringBuilder sqlWhereClauses = new StringBuilder(2000);
 
         if (getActiveOnly()) {
-            buffer.append(whereAnd + " PV.btActive = 1 \n");
+            sqlWhereClauses.append(whereAnd + " PV.btActive = 1 \n");
             whereAnd = "AND";
-            linkVariation = "=";
+            linkVariation = "JOIN";
         }
 
         if (getActiveForRetail()) {
-            buffer.append(whereAnd + " P.btActiveForRetail = 1 \n");
+            sqlWhereClauses.append(whereAnd + " P.btActiveForRetail = 1 \n");
             whereAnd = "AND";
         }
 
         if (getActiveForWholesale()) {
-            buffer.append(whereAnd + " P.btActiveForWholesale = 1 \n");
+            sqlWhereClauses.append(whereAnd + " P.btActiveForWholesale = 1 \n");
             whereAnd = "AND";
         }
 
         if (getInput().getBrand().getId() > 0) {
-            buffer.append(whereAnd + " P.inBrandId = " + input.getBrand().getId() + " \n");
+            sqlWhereClauses.append(whereAnd + " P.inBrandId = " + input.getBrand().getId() + " \n");
             whereAnd = "AND";
         }
 
@@ -177,20 +172,20 @@ public class SearchEngine {
                 priceCol = "moPriceWholesale";
             }
             if (priceLow != null && priceHigh != null) {
-                buffer.append(whereAnd + " (");
-                    buffer.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale BETWEEN " + priceLow + " AND " + priceHigh + ")\n");
-                    buffer.append("\tOR (PV.btSale=0 AND PV." + priceCol + " BETWEEN " + priceLow + " AND " + priceHigh + ")\n");
-                buffer.append(")\n");
+                sqlWhereClauses.append(whereAnd + " (");
+                    sqlWhereClauses.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale BETWEEN " + priceLow + " AND " + priceHigh + ")\n");
+                    sqlWhereClauses.append("\tOR (PV.btSale=0 AND PV." + priceCol + " BETWEEN " + priceLow + " AND " + priceHigh + ")\n");
+                sqlWhereClauses.append(")\n");
             } else if (priceLow != null) {
-                buffer.append(whereAnd + " (");
-                    buffer.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale >= " + priceLow + ")\n");
-                    buffer.append("\tOR (PV.btSale=0 AND PV." + priceCol + " >= " + priceLow + ")\n");
-                buffer.append(")\n");
+                sqlWhereClauses.append(whereAnd + " (");
+                    sqlWhereClauses.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale >= " + priceLow + ")\n");
+                    sqlWhereClauses.append("\tOR (PV.btSale=0 AND PV." + priceCol + " >= " + priceLow + ")\n");
+                sqlWhereClauses.append(")\n");
             } else if (priceHigh != null) {
-                buffer.append(whereAnd + " (");
-                    buffer.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale <= " + priceHigh + ")\n");
-                    buffer.append("\tOR (PV.btSale=0 AND PV." + priceCol + " <= " + priceHigh + ")\n");
-                buffer.append(")\n");
+                sqlWhereClauses.append(whereAnd + " (");
+                    sqlWhereClauses.append("\t(PV.btSale=1 AND PV." + priceCol + "Sale <= " + priceHigh + ")\n");
+                    sqlWhereClauses.append("\tOR (PV.btSale=0 AND PV." + priceCol + " <= " + priceHigh + ")\n");
+                sqlWhereClauses.append(")\n");
             }
         }
 
@@ -199,8 +194,8 @@ public class SearchEngine {
             for (int i=0; i<variations.size(); i++) {
                 ProductVariation thisVariation = (ProductVariation)variations.get(i);
                 if (thisVariation.getSku().length() > 0) {
-                    buffer.append(whereAnd + " PV.vcSku LIKE '" + PiUtility.replace(thisVariation.getSku(),"'","''") + "' \n");
-                    linkVariation = "=";
+                    sqlWhereClauses.append(whereAnd + " PV.vcSku LIKE '" + PiUtility.replace(thisVariation.getSku(),"'","''") + "' \n");
+                    linkVariation = "JOIN";
                     whereAnd = "AND";
                 }
             }
@@ -210,14 +205,14 @@ public class SearchEngine {
             for (int i=0; i<brands.size(); i++) {
                 Brand thisBrand = (Brand)brands.get(i);
                 if (i==0) {
-                    buffer.append(whereAnd + "( \n\t");
+                    sqlWhereClauses.append(whereAnd + "( \n\t");
                     whereAnd = "AND";
                 } else {
-                    buffer.append("\tOR ");
+                    sqlWhereClauses.append("\tOR ");
                 }
-                buffer.append("P.inBrandId=" + thisBrand.getId() + "\n");
+                sqlWhereClauses.append("P.inBrandId=" + thisBrand.getId() + "\n");
                 if (i == brands.size()-1) {
-                    buffer.append(")\n");
+                    sqlWhereClauses.append(")\n");
                 }
             }
         }
@@ -226,15 +221,15 @@ public class SearchEngine {
             for (int i=0; i<stores.size(); i++) {
                 Store thisStore = (Store)stores.get(i);
                 if (i==0) {
-                    buffer.append(whereAnd + " (\n\t");
+                    sqlWhereClauses.append(whereAnd + " (\n\t");
                 } else {
-                    buffer.append("\tOR");
+                    sqlWhereClauses.append("\tOR");
                 }
-                buffer.append("PV.inId IN (SELECT inProductVariationId FROM tbLinkProductVariationStore WHERE inStoreId=" + thisStore.getId() + ")\n");
+                sqlWhereClauses.append("PV.inId IN (SELECT inProductVariationId FROM tbLinkProductVariationStore WHERE inStoreId=" + thisStore.getId() + ")\n");
                 if (i == stores.size()-1) {
-                    buffer.append(")\n");
+                    sqlWhereClauses.append(")\n");
                 }
-                linkVariation = "=";
+                linkVariation = "JOIN";
             }
         }
 
@@ -242,16 +237,16 @@ public class SearchEngine {
             for (int i=0; i<categories.size(); i++) {
                 Category thisCategory = (Category)categories.get(i);
                 if (i==0) {
-                    buffer.append(whereAnd + " ( \n\t");
+                    sqlWhereClauses.append(whereAnd + " ( \n\t");
                     whereAnd = "AND";
                 } else {
-                    buffer.append("\tOR ");
+                    sqlWhereClauses.append("\tOR ");
                 }
-                buffer.append("PV.inId IN (SELECT inProductVariationId FROM tbLinkProductVariationCategory WHERE inCategoryId = " + thisCategory.getId() + ") \n");
+                sqlWhereClauses.append("PV.inId IN (SELECT inProductVariationId FROM tbLinkProductVariationCategory WHERE inCategoryId = " + thisCategory.getId() + ") \n");
                 if (i == categories.size()-1) {
-                    buffer.append(") \n");
+                    sqlWhereClauses.append(") \n");
                 }
-                linkVariation = "=";
+                linkVariation = "JOIN";
             }
         }
 
@@ -259,30 +254,35 @@ public class SearchEngine {
             for (int i=0; i<artists.size(); i++) {
                 Artist thisArtist = (Artist)artists.get(i);
                 if (i==0) {
-                    buffer.append(whereAnd + " ( \n\t");
+                    sqlWhereClauses.append(whereAnd + " ( \n\t");
                     whereAnd = "AND";
                 } else {
-                    buffer.append("OR \n");
+                    sqlWhereClauses.append("OR \n");
                 }
-                buffer.append("P.inId IN (SELECT inProductId FROM tbLinkProductArtist WHERE inArtistId = " + thisArtist.getId() + ") \n");
+                sqlWhereClauses.append("P.inId IN (SELECT inProductId FROM tbLinkProductArtist WHERE inArtistId = " + thisArtist.getId() + ") \n");
                 if (i == artists.size()-1) {
-                    buffer.append(") \n");
+                    sqlWhereClauses.append(") \n");
                 }
             }
         }
 
-        buffer.append(whereAnd + " P.inId " + linkVariation + " PV.inProductId \n");
-        whereAnd = "AND";
-
-        buffer.append(whereAnd + " P.inBrandId " + linkBrand + " B.inId \n");
-        whereAnd = "AND";
-
-        buffer.append("ORDER BY P.vcName, PV.inRank \n");
+		StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("SELECT P.inId AS P_inId, PV.inId AS PV_inId, B.inId AS B_inId, P.vcSku AS P_vcSku, \n");
+        sqlStatement.append("P.vcName, P.vcSku, P.btActiveForRetail, P.btActiveForWholesale, P.btTaxable, P.inBrandId, P.dtCreated, P.dtModified, P.dtInStock, P.txDesc, P.txTextDescription,\n");
+        sqlStatement.append("PV.*, \n");
+        sqlStatement.append("B.vcName AS B_vcName, B.vcLogo AS B_vcLogo ");
+		sqlStatement.append("FROM tbProduct P ");
+		sqlStatement.append(linkVariation)
+			.append(" tbProductVariation PV ON P.inId = PV.inProductId \n");
+		sqlStatement.append(linkBrand)
+			.append(" tbBrand B ON P.inBrandId = B.inId \n");
+		sqlStatement.append(sqlWhereClauses);
+        sqlStatement.append("ORDER BY P.vcName, PV.inRank \n");
 
         if (log.isDebugEnabled()) {
-            log.debug(buffer.toString());
+            log.debug(sqlStatement.toString());
         }
-        return buffer.toString();
+        return sqlStatement.toString();
     }
 
     public ArrayList executeReturnProducts(Connection con) {

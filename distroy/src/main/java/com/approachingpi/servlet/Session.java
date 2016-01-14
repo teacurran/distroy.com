@@ -18,9 +18,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import com.approachingpi.store.Store;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Session {
     private static final char[] saltChars = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray());
+
+    private Log log = LogFactory.getLog(Session.class);
 
     Date active;
     Date Expire;
@@ -28,7 +32,7 @@ public class Session {
     String ip           = "";
     Date login;
     String sessionCode  = "";
-    Store store;         
+    Store store;
     User user;
 
     /** Creates a new instance of Session */
@@ -86,44 +90,23 @@ public class Session {
         if (getId() <= 0) {
             setId(loadGetNewSessionId(con));
         }
-        PreparedStatement ps = con.prepareStatement("IF ((SELECT Count(*) FROM tbSession WHERE inId=? AND vcSessionCode=? AND vcStore=?) > 0) "+
-            "BEGIN "+
-                "UPDATE tbSession SET "+
+		String sqlStatement = "INSERT INTO tbSession (inId,vcSessionCode,vcStore,wholesale,inUserId,dtLogin,dtActive,dtExpire,vcIp) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP,?,?)" +
+			" ON DUPLICATE KEY UPDATE "+
                 "wholesale=?,"+
                 "inUserId=?, "+
                 "dtLogin=?, "+
                 "dtActive=CURRENT_TIMESTAMP, "+
                 "dtExpire=?, "+
-                "vcIp=? "+
-                "WHERE inId=? AND vcSessionCode=? AND vcStore=? " +
-            "END ELSE BEGIN " +
-                "INSERT INTO tbSession (inId,vcSessionCode,vcStore,wholesale,inUserId,dtLogin,dtActive,dtExpire,vcIp) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP,?,?) "+
-            "END");
+                "vcIp=?," +
+				"vcStore=? ";
+
+		if (log.isDebugEnabled()) {
+			log.debug(sqlStatement);
+		}
+
+        PreparedStatement ps = con.prepareStatement(sqlStatement);
+
         int i=0;
-        // IF
-        ps.setInt(++i,getId());
-        ps.setString(++i,getSessionCode());
-        ps.setString(++i,getStore().getAbbreviation());
-
-        // UPDATE
-        ps.setBoolean(++i,getIsWholesale());
-        ps.setInt(++i,getUser().getId());
-        if (getLogin() == null) {
-            ps.setTimestamp(++i,null);
-        } else {
-            ps.setTimestamp(++i,new java.sql.Timestamp(getLogin().getTime()));
-        }
-        if (getExpire() == null) {
-            ps.setTimestamp(++i,null);
-        } else {
-            ps.setTimestamp(++i,new java.sql.Timestamp(getExpire().getTime()));
-        }
-        ps.setString(++i,getIp());
-
-        // UPDATE - WHERE
-        ps.setInt(++i, getId());
-        ps.setString(++i, getSessionCode());
-        ps.setString(++i, getStore().getAbbreviation());
 
         // INSERT
         ps.setInt(++i,getId());
@@ -143,6 +126,22 @@ public class Session {
         }
         ps.setString(++i,getIp());
 
+        // UPDATE
+        ps.setBoolean(++i,getIsWholesale());
+        ps.setInt(++i,getUser().getId());
+        if (getLogin() == null) {
+            ps.setTimestamp(++i,null);
+        } else {
+            ps.setTimestamp(++i,new java.sql.Timestamp(getLogin().getTime()));
+        }
+        if (getExpire() == null) {
+            ps.setTimestamp(++i,null);
+        } else {
+            ps.setTimestamp(++i,new java.sql.Timestamp(getExpire().getTime()));
+        }
+        ps.setString(++i,getIp());
+        ps.setString(++i, getStore().getAbbreviation());
+
         ps.execute();
     }
 
@@ -161,11 +160,11 @@ public class Session {
     public void setActive(java.util.Date active) {
         this.active = active;
     }
-    
+
     public boolean getIsWholesale() {
         return getStore().isWholesale();
     }
-    
+
     public void setIsWholesale(boolean in) {
         getStore().setWholesale(in);
     }
