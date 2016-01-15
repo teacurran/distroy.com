@@ -138,37 +138,39 @@ public class CartItem {
             rs.close();
         }
 
-        PreparedStatement ps = con.prepareStatement("IF ((SELECT COUNT(*) FROM tbCart WHERE inId=? AND inSessionId=? AND vcSessionCode=?)>0) "+
-            "BEGIN "+
-            "UPDATE tbCart SET inProductVariationId=?, inSizeId=?, inQty=? WHERE "+
-            "inId=? AND inSessionId=? AND vcSessionCode=? "+
-            "END ELSE BEGIN "+
-            "INSERT into tbCart (inId, inSessionId, vcSessionCode, inProductVariationId, inSizeId, inQty, dtAdded) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP) "+
-            "END");
-        // IF
-        int i=0;
-        ps.setInt(++i,getId());
-        ps.setInt(++i,getCart().getSession().getId());
-        ps.setString(++i,getCart().getSession().getSessionCode());
+		String sqlStatement = "INSERT into tbCart (" +
+				"inId, " +
+				"inSessionId, " +
+				"vcSessionCode, " +
+				"inProductVariationId, " +
+				"inSizeId, " +
+				"inQty, " +
+				"dtAdded" +
+			") VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+			"ON DUPLICATE KEY UPDATE " +
+				"inProductVariationId=?, " +
+				"inSizeId=?, " +
+				"inQty=?";
 
-        // UPDATE
-        ps.setInt(++i,getProductVariation().getId());
-        ps.setInt(++i,getSize().getId());
-        ps.setInt(++i,getQty());
-        ps.setInt(++i,getId());
-        ps.setInt(++i,getCart().getSession().getId());
-        ps.setString(++i,getCart().getSession().getSessionCode());
+		PreparedStatement ps = con.prepareStatement(sqlStatement);
 
-        // INSERT
-        ps.setInt(++i,getId());
-        ps.setInt(++i,getCart().getSession().getId());
-        ps.setString(++i,getCart().getSession().getSessionCode());
-        ps.setInt(++i,getProductVariation().getId());
-        ps.setInt(++i,getSize().getId());
-        ps.setInt(++i,getQty());
+		int i = 0;
 
-        ps.execute();
-    }
+		// INSERT
+		ps.setInt(++i, getId());
+		ps.setInt(++i, getCart().getSession().getId());
+		ps.setString(++i, getCart().getSession().getSessionCode());
+		ps.setInt(++i, getProductVariation().getId());
+		ps.setInt(++i, getSize().getId());
+		ps.setInt(++i, getQty());
+
+		// UPDATE
+		ps.setInt(++i, getProductVariation().getId());
+		ps.setInt(++i, getSize().getId());
+		ps.setInt(++i, getQty());
+
+		ps.execute();
+	}
 
     public void setCart(Cart in) {
         this.cart = in;

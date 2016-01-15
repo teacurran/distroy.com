@@ -94,16 +94,15 @@ public class MailingList extends PiObject {
     }
 
     public void saveToDb(Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("IF ((SELECT COUNT(*) FROM tbMailingList WHERE vcEmail = ?) = 0)\n"+
-                "BEGIN\n"+
-                    "INSERT INTO tbMailingList (vcEmail, btSubscribed) VALUES(?,?)\n"+
-                "END ELSE BEGIN\n"+
-                    "UPDATE tbMailingList SET "+
-                    "vcEmail=?, btSubscribed=?, dtPromotionSent=?, dtPromotionClaimed=?, dtPromotionUsed=?, moPromotionUsed=?\n"+
-                "END");
+
+		String sqlStatement = "INSERT INTO tbMailingList (vcEmail, btSubscribed) VALUES(?,?) \n" +
+			"ON DUPLICATE KEY UPDATE vcEmail=?, btSubscribed=?, dtPromotionSent=?, dtPromotionClaimed=?, " +
+			"dtPromotionUsed=?, moPromotionUsed=?\n";
+
+
+        PreparedStatement ps = con.prepareStatement(sqlStatement);
+
         int i=0;
-        // IF
-        ps.setString(++i,getEmail());
 
         // INSERT
         ps.setString(++i,getEmail());
