@@ -86,7 +86,7 @@
             <td class="<%=cssClass%>"><%=product.getBrand().getName()%></td>
             <td class="<%=cssClass%>" style="vertical-align: text-bottom;">
                 <% if (image.getName().length() > 0) { %>
-                    <img src="<%=strImgProductDir%><%=image.getThumbName()%>" width="50">
+                    <img src="/productimages/thumb/<%=image.getName().replaceAll(".jpg","")%>/thumb-<%=image.getName().replaceAll(".jpg","")%>-<%=product.getName().replaceAll("[^A-Za-z0-9]","_")%>.jpg" width="50">
                 <% } %>
             </td>
             <td class="<%=cssClass%>"><a href="/admin/Product?action=<%=ProductServlet.ACTION_EDIT%>&productId=<%=product.getId()%>"><%=product.getName()%></a></td>

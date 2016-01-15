@@ -52,7 +52,7 @@ for (int i=0; i<images.size(); i++) {
     if (cellCount == 1) {
         out.write("<tr>");
     }
-    %><td valign="top" align="center"><img id="image_<%=image.getId()%>" alt="image_<%=image.getId()%>" src="<%=strImgProductDir%>thumb/<%=image.getName()%>" class="imageNotSelected" onClick="selectImage(<%=image.getId()%>)"></td><%
+    %><td valign="top" align="center"><img id="image_<%=image.getId()%>" alt="image_<%=image.getId()%>" src="/productimages/thumb/<%=image.getName().replaceAll(".jpg","")%>/thumb-<%=image.getName()%>" class="imageNotSelected" onClick="selectImage(<%=image.getId()%>)"></td><%
     if (cellCount == matrixCols) {
         out.write("</tr>");
         cellCount = 0;

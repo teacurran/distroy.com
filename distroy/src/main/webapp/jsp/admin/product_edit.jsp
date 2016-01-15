@@ -66,7 +66,7 @@
         <%
     }
     %>
-    
+
     function confirmDeleteImg() {
         if (selectedImage == 0) {
             return;
@@ -123,7 +123,7 @@
         iconVariationUp.src     = imgIconUp.src;
         iconVariationDown.src   = imgIconDown.src;
     }
-    
+
     function loadImageBoxUrl(url) {
         if (document.all) {
             // this way of referencing the iframe is called for all ie implementations, although is only neccessary for ie 5.2 on the mac
@@ -133,7 +133,7 @@
             imageBox.src = url;
         }
     }
-    
+
     function mouseOverVariation(id) {
         var variationRow = document.getElementById("variation_" + id);
         if (variationRow) {
@@ -201,7 +201,7 @@
         mouseOverVariation(id);
         enableVariationButtons();
     }
-    
+
     function unSelectVariation() {
         if (selectedVariation > -1) {
             id = selectedVariation;
@@ -209,7 +209,7 @@
             mouseOutVariation(id);
         }
     }
-    
+
     function uploadImage() {
         if (<%=product.getId()%> > 0) {
             var oUploadWindow = window.open("/admin/ImageUpload?action=<%=ImageUploadServlet.ACTION_MAIN%>&productId=<%=product.getId()%>", "imageUpload", "width=400,height=400,status=yes,resizable=yes,scrollbars=yes");
@@ -339,7 +339,7 @@
             <textarea name="textDescription" rows="2" cols="45"><%=product.getTextDescription()%></textarea>
         </td>
     </tr>
-    
+
     <tr>
         <td></td>
         <td><input type="submit" name="button_save" value="save"></td>
@@ -389,7 +389,7 @@
                     <tr id="variation_<%=i%>" onclick="selectVariation(<%=i%>)">
                         <td class="<%=cssClass%>" style="vertical-align: text-bottom;">
                             <% if (image.getName().length() > 0) { %>
-                                <img src="<%=strImgProductDir%><%=image.getThumbName()%>" width="50">
+                                <img src="/productimages/thumb/<%=image.getName().replaceAll(".jpg","")%>/thumb-<%=image.getName().replaceAll(".jpg","")%>-<%=product.getName().replaceAll("[^A-Za-z0-9]","_")%>.jpg" width="50">
                             <% } %>
                         </td>
                         <td class="<%=cssClass%>"><a href="/admin/Product?action=<%=ProductServlet.ACTION_EDIT_VARIATION%>&productId=<%=product.getId()%>&variationId=<%=variation.getId()%>"><%=variation.getStyle()%></a></td>

@@ -343,39 +343,32 @@ public class Product implements Serializable {
         for (int x=0; x<getArtists().size(); x++) {
             Artist artist = (Artist)getArtists().get(x);
 
-            PreparedStatement ps = con.prepareStatement(""+
-                "IF ((SELECT Count(*) FROM tbLinkProductArtist WHERE inProductId = ? AND inArtistId = ?) > 0) "+
-                "BEGIN "+
-                    "UPDATE tbLinkProductArtist SET vcRelationship = ? "+
-                    "WHERE inProductId = ? AND inArtistId = ? "+
-                "END "+
-                "ELSE "+
-                "BEGIN "+
-                    "INSERT INTO tbLinkProductArtist ("+
-                        "inProductId,"+
-                        "inArtistId,"+
-                        "vcRelationship"+
-                    ") VALUES ("+
-                        "?,?,?"+
-                    ")"+
-                "END");
-            int i = 0;
-            ps.setInt(++i,getId());
-            ps.setInt(++i,artist.getId());
-            ps.setString(++i,artist.getRelationship());
-            ps.setInt(++i,getId());
-            ps.setInt(++i,artist.getId());
-            ps.setInt(++i,getId());
-            ps.setInt(++i,artist.getId());
-            ps.setString(++i,artist.getRelationship());
-            ps.execute();
+			String sqlStatement = "INSERT INTO tbLinkProductArtist (" +
+				"inProductId," +
+				"inArtistId," +
+				"vcRelationship" +
+				") VALUES (" +
+				"?,?,?" +
+				") " +
+				"ON DUPLICATE KEY UPDATE vcRelationship = ?";
 
-            artistList += "," + artist.getId();
+			PreparedStatement ps = con.prepareStatement(sqlStatement);
+			int i = 0;
 
-            ps.close(); ps=null;
-        }
+			ps.setInt(++i, getId());
+			ps.setInt(++i, artist.getId());
+			ps.setString(++i, artist.getRelationship());
+			ps.setString(++i, artist.getRelationship());
+			ps.execute();
 
-        PreparedStatement ps = con.prepareStatement("DELETE FROM tbLinkProductArtist WHERE inProductId = ? and inArtistId NOT IN (" + artistList + ")");
+			artistList += "," + artist.getId();
+
+			ps.close();
+			ps = null;
+		}
+
+        PreparedStatement ps = con.prepareStatement("DELETE FROM tbLinkProductArtist WHERE inProductId = ? and " +
+			"inArtistId NOT IN (" + artistList + ")");
         ps.setInt(1,this.getId());
         ps.execute();
         ps.close(); ps=null;
