@@ -100,44 +100,38 @@ public class UserSearchEngine extends SearchEngine {
     public String getSearchString() { return searchString; }
     public String getSql() {
         this.resetWhereAnd();
-        String companyJoin = "*=";
+        String companyJoin = "LEFT OUTER JOIN";
         //String billAddressJoin = "*=";
 
-        StringBuffer buffer = new StringBuffer(2000);
-
-        buffer.append("SELECT U.inId as inUserId, C.inId as inCompanyId, U.*, C.* FROM tbUser U, tbCompany C\n");
+        StringBuilder whereStatement = new StringBuilder(2000);
         if (getCompany().getId() > 0) {
-            companyJoin = "=";
-            buffer.append(getWhereAnd());
-            buffer.append("U.inCompanyId=");
-            buffer.append(getCompany().getId());
-            buffer.append("\n");
+            companyJoin = "JOIN";
+            whereStatement.append(getWhereAnd());
+            whereStatement.append("U.inCompanyId=");
+            whereStatement.append(getCompany().getId());
+            whereStatement.append("\n");
         }
-        buffer.append(getWhereAnd());
-        buffer.append("U.inCompanyId");
-        buffer.append(companyJoin);
-        buffer.append("C.inId");
-        buffer.append("\n");
+
         if (getType() != USER_TYPE_ANY) {
-            buffer.append(getWhereAnd());
-            buffer.append("U.smUserType=");
-            buffer.append(getType());
-            buffer.append("\n");
+            whereStatement.append(getWhereAnd());
+            whereStatement.append("U.smUserType=");
+            whereStatement.append(getType());
+            whereStatement.append("\n");
         }
         try {
             int userIdSearch = Integer.parseInt(this.getSearchString());
             if (userIdSearch > 0) {
-                buffer.append(getWhereAnd());
-                buffer.append("U.inId=");
-                buffer.append(userIdSearch);
-                buffer.append("\n");
+                whereStatement.append(getWhereAnd());
+                whereStatement.append("U.inId=");
+                whereStatement.append(userIdSearch);
+                whereStatement.append("\n");
             }
         } catch (Exception e) {
             if (this.getSearchString().length() > 0) {
                 String term = getSearchString();
                 String escapedTerm = term.replaceAll("'","''");
-                buffer.append(getWhereAnd());
-                buffer.append("U.vcEmail LIKE '%" + escapedTerm + "%'\n");
+                whereStatement.append(getWhereAnd());
+                whereStatement.append("U.vcEmail LIKE '%" + escapedTerm + "%'\n");
 
                 /*
                 String firstName = term;
@@ -173,37 +167,37 @@ public class UserSearchEngine extends SearchEngine {
             SearchDateSpan span = getDateSpan();
             String field = (span.getField() == DATE_SPAN_CREATED) ? "dtCreated" : "dtModified";
 
-            buffer.append(getWhereAnd());
-            buffer.append(field);
+            whereStatement.append(getWhereAnd());
+            whereStatement.append(field);
             switch (span.getConstraint()) {
                 case SearchDateSpan.DATE_ON :
-                    buffer.append(" BETWEEN '" + span.getStartString() + "' AND '" + span.getEndString() + "' ");
+                    whereStatement.append(" BETWEEN '" + span.getStartString() + "' AND '" + span.getEndString() + "' ");
                     break;
                 case SearchDateSpan.DATE_BEFORE :
                     // before dateEnd so we are inclusive
-                    buffer.append(" " + field + " <= '" + span.getEndString() + "' ");
+                    whereStatement.append(" " + field + " <= '" + span.getEndString() + "' ");
                     break;
                 case SearchDateSpan.DATE_AFTER :
                     // after dateStart so we are inclusive
-                    buffer.append(" " + field + " >= '" + span.getStartString() + "' ");
+                    whereStatement.append(" " + field + " >= '" + span.getStartString() + "' ");
                     break;
                 case SearchDateSpan.DATE_BETWEEN :
                     // between dateStart and dateEnd
-                    buffer.append(" " + field + " BETWEEN '" + span.getStartString() + "' AND '" + span.getEndString() + "' ");
+                    whereStatement.append(" " + field + " BETWEEN '" + span.getStartString() + "' AND '" + span.getEndString() + "' ");
                     break;
             }
         }
         if (getSort().size() > 0) {
-            buffer.append(" ORDER BY ");
+            whereStatement.append(" ORDER BY ");
             if (getSort().size() == 0) {
                 this.addSort(UserSearchEngine.SORT_DEFAULT);
             }
             for (int i=0; i<getSort().size(); i++) {
                 Integer thisSort = (Integer)getSort().get(i);
                 if (i>0) {
-                    buffer.append(", ");
+                    whereStatement.append(", ");
                 }
-                switch (thisSort.intValue()) {
+                switch (thisSort) {
                     //case SORT_NAME :
                     //    switch (getSortOrder()) {
                     //        case SORT_ORDER_ASC :
@@ -227,39 +221,47 @@ public class UserSearchEngine extends SearchEngine {
                         break;
                     */
                     case SORT_TYPE :
-                        buffer.append(" U.inType");
+                        whereStatement.append(" U.inType");
                         break;
                     case SORT_DATE_CREATED :
-                        buffer.append(" U.dtCreated");
+                        whereStatement.append(" U.dtCreated");
                         break;
                     case SORT_DATE_MODIFIED :
-                        buffer.append(" U.dtModified");
+                        whereStatement.append(" U.dtModified");
                         break;
                     case SORT_DATE_ACTIVE :
-                        buffer.append("U.dtActive");
+                        whereStatement.append("U.dtActive");
                         break;
                     case SORT_ID :
-                        buffer.append("U.inId");
+                        whereStatement.append("U.inId");
                         break;
                     case SORT_EMAIL :
-                        buffer.append("U.vcEmail");
+                        whereStatement.append("U.vcEmail");
                         break;
                 }
-                if (thisSort.intValue() != SORT_NAME && thisSort.intValue() != SORT_NAME_FIRST) {
+                if (thisSort != SORT_NAME && thisSort != SORT_NAME_FIRST) {
                     switch (getSortOrder()) {
                         case SORT_ORDER_ASC :
-                            buffer.append(" ASC ");
+                            whereStatement.append(" ASC ");
                             break;
                         case SORT_ORDER_DESC :
-                            buffer.append(" DESC ");
+                            whereStatement.append(" DESC ");
                             break;
                     }
                 }
             }
         }
+
+		StringBuilder sqlStatement = new StringBuilder();
+		sqlStatement.append("SELECT U.inId as inUserId, C.inId as inCompanyId, U.*, C.*\n");
+		sqlStatement.append("FROM tbUser U\n");
+		sqlStatement.append(companyJoin).append(" tbCompany C ON U.inCompanyId=C.inId\n");
+		sqlStatement.append(whereStatement);
+
         //System.out.println(buffer);
-        return buffer.toString();
+        return sqlStatement.toString();
     }
+
     public int getType() {
         return type;
     }
