@@ -36,7 +36,7 @@ public class Royalties {
     private int inQty ;
     private String vcProductVariationId = "";
     private String vcItemDesc = "";
-    
+
     public Royalties() {
     }
     public Royalties(int in) {
@@ -44,7 +44,7 @@ public class Royalties {
 //        System.out.println("artistID from royalties method: " + in);
 //        System.out.println("getId output from royalties method: " + this.getId());
     }
-    
+
 //    public void updateOrderSummary (Connection con) throws SQLException {
 //        PreparedStatement ps = con.prepareStatement("begin " +
 //                "drop table viOrderSummary " +
@@ -59,19 +59,19 @@ public class Royalties {
 //                "AND D.inProductVariationId = V.inId " +
 //                "AND V.inProductId = LNK.inProductId " +
 //                "GROUP BY D.inId, D.vcOrderId, D.moPriceTotal, O.inStatus, S.vcAbbrev, S.btWholesale, A.inId, D.inQty, D.vcItemDesc, O.dtShipComplete " +
-//                "end" 
+//                "end"
 //
 //                );
-//                
+//
 //        ps.execute();
 //    }
 public void updateRoyalties (Connection con)  throws SQLException {
 
-    String sql = "begin select a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed " +  
-                 "from tbArtistRoyalties a, tbArtist c " + 
+    String sql = "begin select a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed " +
+                 "from tbArtistRoyalties a, tbArtist c " +
                  "where a.vcCheckNumber=(select max(b.vcCheckNumber) " +
 			"from tbArtistRoyalties b " +
-			"where a.inArtistId=b.inArtistId) " + 
+			"where a.inArtistId=b.inArtistId) " +
                  "and a.inArtistId=c.inId " +
                  "group by a.vcNameDisplay, a.inArtistId, a.vcCheckNumber, a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed end ";
 
@@ -89,12 +89,12 @@ public void updateRoyalties (Connection con)  throws SQLException {
                 ps2.setInt(i2++, rs.getInt("inArtistId"));
                 ps2.setInt(i2++, rs.getInt("inArtistId"));
                 ps2.execute();
-                
+
 //            String sql ="begin select a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, a.moRoyaltiesPaid, a.moRoyaltiesOwed from tbArtistRoyalties a where a.vcCheckNumber=(select max(b.vcCheckNumber) from tbArtistRoyalties b where a.inArtistId=b.inArtistId) group by vcNameDisplay, inArtistId,vcCheckNumber,moCheckAmount, dtCheck, dtCreated, dtModified, moRoyaltiesPaid, moRoyaltiesOwed end";
 //            PreparedStatement ps = con.prepareStatement(sql);
 //            ResultSet rs = ps.executeQuery();
 //            while (rs.next()) {
-//                
+//
 //                   String sql2 = "begin update tbArtistRoyalties set moRoyaltiesPaid=( select sum(moCheckAmount) from tbArtistRoyalties where inArtistId=?) where inArtistId=? end";
 //                PreparedStatement ps2 = con.prepareStatement(sql2);
 //                        int i2=1;
@@ -102,7 +102,7 @@ public void updateRoyalties (Connection con)  throws SQLException {
 //                        ps2.setInt(i2++, rs.getInt("inArtistId"));
 //                        ps2.execute();
 
-                String sql3 =                         
+                String sql3 =
   "IF (select moRoyaltyDollarRetail from tbArtist where inId=?)>0 AND  (select moRoyaltyDollarWholesale from tbArtist where inId=?)>0 "+
         "update tbArtist set moRoyaltiesOwed= " +
 //                        "update tbArtistRoyalties set moRoyaltiesOwed= " +
@@ -110,29 +110,29 @@ public void updateRoyalties (Connection con)  throws SQLException {
 				"FROM viOrderSummary "+
 				"WHERE inArtistId=? and inStatus='3' and btWholesale='0') + (select moRoyaltyDollarWholesale * (SELECT count(*) "+
 																"FROM viOrderSummary "+
-																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+ 
+																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+
 												"FROM tbArtist "+
 												"WHERE inId=?) "+
 "-(select max(moRoyaltiesPaid) from tbArtist where inId=?) "+
 	"FROM tbArtist "+
-	"WHERE inId=? )"+ 
-             " WHERE inId=? " +                        
- 
-"ELSE IF (select moRoyaltyDollarRetail from tbArtist where inId=?)>0 AND  (select deRoyaltyPercentWholesale from tbArtist where inId=?)>0 "+ 
-        "update tbArtist set moRoyaltiesOwed= " +                        
-//                        "update tbArtistRoyalties set moRoyaltiesOwed= " +                        
+	"WHERE inId=? )"+
+             " WHERE inId=? " +
+
+"ELSE IF (select moRoyaltyDollarRetail from tbArtist where inId=?)>0 AND  (select deRoyaltyPercentWholesale from tbArtist where inId=?)>0 "+
+        "update tbArtist set moRoyaltiesOwed= " +
+//                        "update tbArtistRoyalties set moRoyaltiesOwed= " +
 	"(select moRoyaltyDollarRetail * (SELECT count(*) "+
 				"FROM viOrderSummary "+
 				"WHERE inArtistId=? and inStatus='3' and btWholesale='0') + (select deRoyaltyPercentWholesale/100 * (SELECT isnull(sum(moPriceTotalSum),0) "+
 																"FROM viOrderSummary "+
-																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+ 
+																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+
 												"FROM tbArtist "+
 												"WHERE inId=?) "+
 "-(select max(moRoyaltiesPaid) from tbArtist where inId=?) "+
 	"FROM tbArtist "+
 	"WHERE inId=?) "+
-             " WHERE inId=? " +                        
- 
+             " WHERE inId=? " +
+
 "ELSE IF (select deRoyaltyPercentRetail from tbArtist where inId=?)>0 AND  (select moRoyaltyDollarWholesale from tbArtist where inId=?)>0  "+
         "update tbArtist set moRoyaltiesOwed= " +
 //                        "update tbArtistRoyalties set moRoyaltiesOwed= " +
@@ -140,14 +140,14 @@ public void updateRoyalties (Connection con)  throws SQLException {
 				"FROM viOrderSummary "+
 				"WHERE inArtistId=? and inStatus='3' and btWholesale='0') + (select moRoyaltyDollarWholesale * (SELECT count(*) "+
 																"FROM viOrderSummary "+
-																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+ 
+																"WHERE inArtistId=? and inStatus='3' and btWholesale='1') "+
 												"FROM tbArtist "+
 												"WHERE inId=?) "+
 "-(select max(moRoyaltiesPaid) from tbArtist where inId=?) "+
 	"FROM tbArtist "+
 	"WHERE inId=?) "+
-             " WHERE inId=? " +                                                
-                        
+             " WHERE inId=? " +
+
  " ELSE IF (select deRoyaltyPercentRetail from tbArtist where inId=?)>0 AND (select deRoyaltyPercentWholesale from tbArtist where inId=?)>0 " +
                 "update tbArtist set moRoyaltiesOwed= " +
 //                        "update tbArtistRoyalties set moRoyaltiesOwed= " +
@@ -162,9 +162,9 @@ public void updateRoyalties (Connection con)  throws SQLException {
         "FROM tbArtist "+
         "WHERE inId=?) "+
              " WHERE inId=? " +
-                        
+
                        " ELSE update tbArtist set moRoyaltiesOwed=0 where inId=? "
-// " ELSE update tbArtistRoyalties set moRoyaltiesOwed=0 where inArtistId=? "           
+// " ELSE update tbArtistRoyalties set moRoyaltiesOwed=0 where inArtistId=? "
                 ;
                 PreparedStatement ps3 = con.prepareStatement(sql3);
                         int i=1;
@@ -203,36 +203,46 @@ public void updateRoyalties (Connection con)  throws SQLException {
                         ps3.setInt(i++, rs.getInt("inArtistId"));
                         ps3.execute();
             }
-            
+
             rs.close();
 }
-    
+
     public static ArrayList getAllArtists(Connection con) {
         return Royalties.getAllArtists(con,"a.vcNameDisplay");
     }
-    
+
     public static ArrayList getAllArtists(Connection con, String orderBy) {
-        ArrayList artists = new ArrayList();
+        ArrayList<Royalties> artists = new ArrayList<>();
         try {
-  
-            String sql ="begin select a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed from tbArtistRoyalties a, tbArtist c where a.inArtistId=c.inId and a.vcCheckNumber=(select max(b.vcCheckNumber) from tbArtistRoyalties b where a.inArtistId=b.inArtistId) group by a.vcNameDisplay, inArtistId,vcCheckNumber,moCheckAmount, dtCheck, a.dtCreated, a.dtModified, moRoyaltiesPaid, moRoyaltiesOwed ";
-            if (orderBy.length() > 0) {
-                sql += "ORDER BY " + orderBy;
-            }
-                    sql += " end";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Royalties newRoyalties = new Royalties(rs.getInt("inArtistId"));
-                newRoyalties.loadFromRs(rs);
-                artists.add(newRoyalties);
-            }
-            rs.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return artists;
-    }
+
+            String sql = "select a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount, " +
+				"a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed\n" +
+				"FROM tbArtistRoyalties a\n" +
+				"JOIN tbArtist c ON a.inArtistId=c.inId\n" +
+				"WHERE a.vcCheckNumber = (" +
+					"SELECT MAX(b.vcCheckNumber)\n" +
+					"FROM tbArtistRoyalties b \n" +
+					"where a.inArtistId = b.inArtistId" +
+				") GROUP BY a.vcNameDisplay, inArtistId,vcCheckNumber, moCheckAmount," +
+				"dtCheck, a.dtCreated, a.dtModified, moRoyaltiesPaid, moRoyaltiesOwed ";
+
+			if (orderBy.length() > 0) {
+				sql += "ORDER BY " + orderBy;
+			}
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Royalties newRoyalties = new Royalties(rs.getInt("inArtistId"));
+				newRoyalties.loadFromRs(rs);
+				artists.add(newRoyalties);
+			}
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return artists;
+	}
 
     public Date getDateShipped() { return this.dateShipComplete; }
     public Date getDateCreated() { return this.dateCreated; }
@@ -266,7 +276,7 @@ public void updateRoyalties (Connection con)  throws SQLException {
 //                        PreparedStatement ps = con.prepareStatement("SELECT * FROM tbArtistRoyalties WHERE inArtistId = ? AND moCheckAmount > 0 ORDER BY dtCheck DESC");
             ps.setInt(1, in);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 Royalties newRoyalties = new Royalties(rs.getInt("inId"));
                 newRoyalties.loadFromRs(rs);
@@ -277,9 +287,9 @@ public void updateRoyalties (Connection con)  throws SQLException {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return history; 
+        return history;
     }
-    
+
         public static ArrayList loadAudit(Connection con, int in) throws SQLException {
         ArrayList audit = new ArrayList();
 
@@ -291,19 +301,19 @@ public void updateRoyalties (Connection con)  throws SQLException {
                                                         "ORDER BY dtShipComplete DESC"
                                                         );
              */
-             PreparedStatement ps = con.prepareStatement("SELECT O.inId, O.vcOrderId, O.inQty, O.vcItemDesc, O.dtShipComplete " +   
+             PreparedStatement ps = con.prepareStatement("SELECT O.inId, O.vcOrderId, O.inQty, O.vcItemDesc, O.dtShipComplete " +
 "FROM viOrderSummary O " +
-"WHERE O.inArtistId=? AND O.inStatus='3'  " +   
+"WHERE O.inArtistId=? AND O.inStatus='3'  " +
 "and O.dtShipComplete >= (select max(A.dtCheck)  " +
 "			from tbArtistRoyalties A " +
 "			where A.inArtistId=?) " +
 "ORDER BY O.dtShipComplete DESC");
-            
-            
+
+
             ps.setInt(1, in);
             ps.setInt(2, in);
             ResultSet rs = ps.executeQuery();
-            
+
             while (rs.next()) {
 //                Royalties newRoyalties = new Royalties(rs.getInt("vcOrderId"));
                 Royalties newRoyalties = new Royalties(rs.getInt("inId"));
@@ -315,9 +325,9 @@ public void updateRoyalties (Connection con)  throws SQLException {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return audit; 
+        return audit;
     }
-    
+
     public void loadFromDb(Connection con) throws SQLException {
         if (getId() <= 0) {
             return;
@@ -340,7 +350,7 @@ public void updateRoyalties (Connection con)  throws SQLException {
             e.printStackTrace();
         }
     }
-    
+
     public void loadRoyaltiesFromDb(Connection con) throws SQLException {
 //    public static ArrayList loadRoyaltiesFromDb(Connection con) throws SQLException {
         if (getId() <= 0) {
@@ -358,7 +368,7 @@ public void updateRoyalties (Connection con)  throws SQLException {
                 throw new Exception("Artist Id " + id + " not found in tbArtistRoyalties");
             }
             rs.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -379,12 +389,12 @@ public void updateRoyalties (Connection con)  throws SQLException {
                 throw new Exception("Artist " + getNameDisplay() + " not found");
             }
             rs.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void loadFromRs(ResultSet rs) throws SQLException {
         this.setNameDisplay(rs.getString("vcNameDisplay"));
         this.setCheckNumber(rs.getString("vcCheckNumber"));
@@ -396,19 +406,19 @@ public void updateRoyalties (Connection con)  throws SQLException {
         this.setAmtPaid(rs.getBigDecimal("moRoyaltiesPaid"));
         this.setAmtOwed(rs.getBigDecimal("moRoyaltiesOwed"));
     }
-    
+
     //added for audit purposes:
      public void loadFromRs2(ResultSet rs) throws SQLException {
         this.setOrderId(rs.getString("vcOrderId"));
         this.setQuantity(rs.getInt("inQty"));
-        this.setItemDesc(rs.getString("vcItemDesc"));  
+        this.setItemDesc(rs.getString("vcItemDesc"));
         this.setDateShipped(rs.getTimestamp("dtShipComplete"));
 //        this.setDateCreated(rs.getTimestamp("dtCreated"));
     }
-    
+
     public void saveToDb(Connection con) throws SQLException {
         PreparedStatement ps;
-         
+
         if (this.getId() > 0) {
             ps = con.prepareStatement("INSERT INTO tbArtistRoyalties (inArtistId, vcNameDisplay, vcCheckNumber, moCheckAmount, dtCheck, dtModified, dtCreated) VALUES(?,?,?,?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)") ;
         } else {
@@ -427,7 +437,7 @@ public void updateRoyalties (Connection con)  throws SQLException {
         ps.execute();
 
     }
-    
+
     public void setNameFirst(String in) { this.nameFirst = (in==null) ? "" : in; }
     public void setDateCreated(Date in) { this.dateCreated = in; }
     public void setDateModified(Date in) { this.dateModified = in; }

@@ -103,32 +103,33 @@ public class OrderSearch extends SearchEngine {
         return set;
     }
 
-    public String getSql() {
-        resetWhereAnd();
-        StringBuffer sql = new StringBuffer(4000);
-        SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yy hh:mm:ss");
+	public String getSql() {
+		resetWhereAnd();
+		StringBuffer sql = new StringBuffer(4000);
+		SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yy hh:mm:ss");
 
-        sql.append("SELECT O.*, B.inId AS inBillId, B.vcNameFirst, B.vcNameLast\n");
-        sql.append("FROM tbOrder O, tbOrderAddress B\n");
-        sql.append(getWhereAnd() + "O.inBillId *= B.inId\n");
+		sql.append("SELECT O.*, B.inId AS inBillId, B.vcNameFirst, B.vcNameLast\n");
+		sql.append("FROM tbOrder O\n");
+		sql.append("LEFT OUTER JOIN tbOrderAddress B ON O.inBillId = B.inId\n");
 
-        if (getDateStart()!= null && getDateEnd() != null) {
-            sql.append(getWhereAnd() + "O.dtCreated BETWEEN " + sdf.format(getDateStart()) + " AND " + sdf.format(getDateEnd()) + "\n");
-        } else if (getDateStart() != null) {
-            sql.append(getWhereAnd() + "O.dtCreated >= " + sdf.format(getDateStart()) + "\n");
-        } else if (getDateEnd() != null) {
-            sql.append(getWhereAnd() + "O.dtCreated <= " + sdf.format(getDateEnd()) + "\n");
-        }
+		if (getDateStart() != null && getDateEnd() != null) {
+			sql.append(getWhereAnd()).append("O.dtCreated BETWEEN ").append(sdf.format(getDateStart())).append(" AND ")
+				.append(sdf.format(getDateEnd())).append("\n");
+		} else if (getDateStart() != null) {
+			sql.append(getWhereAnd()).append("O.dtCreated >= ").append(sdf.format(getDateStart())).append("\n");
+		} else if (getDateEnd() != null) {
+			sql.append(getWhereAnd()).append("O.dtCreated <= ").append(sdf.format(getDateEnd())).append("\n");
+		}
 
         if (getStatus() != STATUS_ANY) {
-            sql.append(getWhereAnd() + "O.inStatus=" + getStatus() + "\n");
+            sql.append(getWhereAnd()).append("O.inStatus=").append(getStatus()).append("\n");
         }
 
         if (getStore().getId() != STORE_ANY) {
-            sql.append(getWhereAnd() + "O.inStoreId=" + getStore().getId());
+            sql.append(getWhereAnd()).append("O.inStoreId=").append(getStore().getId()).append("\n");
         }
         if (getUser().getId() > 0) {
-            sql.append(getWhereAnd() + "O.inUserId=" + getUser().getId());
+            sql.append(getWhereAnd()).append("O.inUserId=").append(getUser().getId()).append("\n");
         }
 
         sql.append("ORDER BY ");

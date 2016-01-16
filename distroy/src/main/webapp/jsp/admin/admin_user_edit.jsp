@@ -24,7 +24,7 @@
     <a href="/admin/AdminUser?action=<%=UserServlet.ACTION_LIST%>" title="Back to User List"><img src="<%=strImgAdminDir%>icons/icon_arrow_left.gif" border="0" alt="left arrow"></a><br>
 </div>
 
-<form method="post" action="<%=strBaseUrl%>%>" name="mainForm">
+<form method="post" action="<%=strBaseUrl%>" name="mainForm">
 <input type="hidden" name="action" value="<%=CompanyServlet.ACTION_SAVE%>">
 <input type="hidden" name="userId" value="<%=userEdit.getId()%>">
 <input type="hidden" name="companyId" value="<%=userEdit.getCompany().getId()%>">
