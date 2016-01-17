@@ -36,59 +36,54 @@ public class InventoryServlet extends PiServlet {
 
         int action = PiServlet.getReqInt(req, "action", ACTION_LIST);
 
-        if (action == ACTION_UPDATE) {
-            ProductVariation var = new ProductVariation(PiServlet.getReqInt(req, "productVariationId", 0));
-            Size size = new Size(PiServlet.getReqInt(req, "size"));
-            int sizeValue = PiServlet.getReqInt(req, "sizeValue", 0);
+		if (action == ACTION_UPDATE) {
+			ProductVariation var = new ProductVariation(PiServlet.getReqInt(req, "productVariationId", 0));
+			Size size = new Size(PiServlet.getReqInt(req, "size"));
+			int sizeValue = PiServlet.getReqInt(req, "sizeValue", 0);
 
-            try {
-                var.loadFromDb(con);
-                size.loadFromDb(con);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (var.getId() > 0 && size.getId() > 0) {
+			try {
+				var.loadFromDb(con);
+				size.loadFromDb(con);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-                try {
-                    PreparedStatement ps = con.prepareStatement(""+
-                        "IF ((SELECT Count(*) FROM tbLinkProductVariationSize WHERE inProductVariationId = ? AND inSizeId = ?) > 0) "+
-                        "BEGIN "+
-                            "UPDATE tbLinkProductVariationSize SET inQtyInStock=? "+
-                            "WHERE inProductVariationId = ? AND inSizeId = ? "+
-                        "END ELSE BEGIN "+
-                            "INSERT INTO tbLinkProductVariationSize ("+
-                                "inProductVariationId,"+
-                                "inSizeId,"+
-                                "inQtyInStock,"+
-                                "inRank "+
-                            ") "+
-                            "SELECT ?, ?, ?, Count(*) * 2 FROM tbLinkProductVariationSize "+
-                            "WHERE inProductVariationId=? "+
-                        "END");
-                    int i=0;
-                    // IF
-                    ps.setInt(++i,var.getId());
-                    ps.setInt(++i,size.getId());
+			if (var.getId() > 0 && size.getId() > 0) {
 
-                    // update
-                    ps.setInt(++i,sizeValue);
-                    ps.setInt(++i,var.getId());
-                    ps.setInt(++i,size.getId());
+				try {
 
-                    // insert
-                    ps.setInt(++i,var.getId());
-                    ps.setInt(++i,size.getId());
-                    ps.setInt(++i,size.getQtyToAdd());
-                    ps.setInt(++i,var.getId());
+					String sqlStatement = "INSERT INTO tbLinkProductVariationSize ("+
+							"inProductVariationId,"+
+							"inSizeId,"+
+							"inQtyInStock,"+
+							"inRank "+
+						") " +
+						"SELECT ?, ?, ?, Count(*) * 2 FROM tbLinkProductVariationSize "+
+                            "WHERE inProductVariationId=? " +
+						"ON DUPLICATE KEY UPDATE\n" +
+						"inQtyInStock=?";
 
-                    ps.execute();
-                    this.getAltAttribute(req).put("update_success", true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    this.getAltAttribute(req).put("update_success", false);
-                }
-            }
-        }
+					PreparedStatement ps = con.prepareStatement(sqlStatement);
+
+					int i=0;
+
+					// insert
+					ps.setInt(++i,var.getId());
+					ps.setInt(++i,size.getId());
+					ps.setInt(++i,size.getQtyToAdd());
+					ps.setInt(++i,var.getId());
+
+					// update
+					ps.setInt(++i,sizeValue);
+
+					ps.execute();
+					this.getAltAttribute(req).put("update_success", true);
+				} catch (Exception e) {
+					e.printStackTrace();
+					this.getAltAttribute(req).put("update_success", false);
+				}
+			}
+		}
 
         if (action == ACTION_LIST) {
             ProductServlet.getArtists(req, con);
