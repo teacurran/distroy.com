@@ -1,3 +1,3 @@
 <%
-request.getRequestDispatcher("/home").forward(request,response);
+request.getRequestDispatcher("/categories/12/60").forward(request,response);
 %>
