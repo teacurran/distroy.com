@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>distroy</artifactId>
-	<name>distroy war file</name>
+	<name>distroy</name>
 
 	<packaging>war</packaging>
 
