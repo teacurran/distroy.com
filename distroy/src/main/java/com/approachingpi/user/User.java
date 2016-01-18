@@ -130,7 +130,7 @@ public class User {
 		return company;
 	}
     public Date getDateCreated() { return this.dateCreated; }
-    public Date getDateModified() { return this.dateModified; } 
+    public Date getDateModified() { return this.dateModified; }
     public int getShipId() { return this.shipId; }
     public int getId() { return this.id; }
     public String getEmail() { return this.email; }
@@ -193,7 +193,7 @@ public class User {
         return this.email;
         //return this.username;
     }
-    
+
     public void loadAddressesFromDb(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM tbAddress WHERE inUserId = ? ORDER BY vcReference");
         ps.setInt(1,getId());
@@ -390,30 +390,27 @@ public class User {
             Enumeration keys = prefs.keys();
             String currentKey;
             String currentValue;
-            while (keys.hasMoreElements()) {
-                currentKey = (String)keys.nextElement();
-                currentValue = (String)prefs.get(currentKey);
-                //System.out.println("Saving Pref: " + currentKey + "=" + currentValue);
-                ps = con.prepareStatement("IF ((SELECT Count(*) FROM tbUserPref WHERE inUserId = ? AND vcKey = ?) > 0) "+
-                        "BEGIN " +
-                        "UPDATE tbUserPref SET vcValue = ? WHERE inUserId = ? AND vcKey = ? " +
-                        "END ELSE BEGIN " +
-                        "INSERT INTO tbUserPref (inUserId, vcKey, vcValue) VALUES (?,?,?) "+
-                        "END");
-                ps.setInt(1,getId());
-                ps.setString(2,currentKey);
-                ps.setString(3,currentValue);
-                ps.setInt(4,getId());
-                ps.setString(5,currentKey);
-                ps.setInt(6,getId());
-                ps.setString(7,currentKey);
-                ps.setString(8,currentValue);
-                ps.execute();
-            }
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        prefsChanged = false;
+			while (keys.hasMoreElements()) {
+				currentKey = (String) keys.nextElement();
+				currentValue = (String) prefs.get(currentKey);
+				//System.out.println("Saving Pref: " + currentKey + "=" + currentValue);
+
+				String sqlStatement = "INSERT INTO tbUserPref (inUserId, vcKey, vcValue) VALUES (?,?,?)\n" +
+					"ON DUPLICATE KEY UPDATE vcValue = ? WHERE inUserId = ? AND vcKey = ?";
+
+				ps = con.prepareStatement(sqlStatement);
+
+				ps.setInt(1, getId());
+				ps.setString(2, currentKey);
+				ps.setString(3, currentValue);
+				ps.setString(4, currentValue);
+
+				ps.execute();
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		prefsChanged = false;
     }
 
     public void saveToDb(Connection con) throws SQLException {
@@ -478,8 +475,8 @@ public class User {
     }
 
     public void setBillId(int in) { this.billId = in; }
-    public void setDateCreated(Date in) { this.dateCreated = in; } 
-    public void setDateModified(Date in) { this.dateModified = in; } 
+    public void setDateCreated(Date in) { this.dateCreated = in; }
+    public void setDateModified(Date in) { this.dateModified = in; }
 	public void setCompany(Company in) { this.company = in; }
     public void setId(int in) { this.id = in; }
     public void setEmail(String in) { this.email = (in == null)?"":in; }
