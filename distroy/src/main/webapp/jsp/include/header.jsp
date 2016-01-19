@@ -234,7 +234,9 @@ function headerInit() {
                                             <a href="/wholesale">WHOLESALE</a>
                                         <% } %>
                                         </span>
+											<%--
                                         <span class="vertical_accordion_notoggle"><a href="http://blog.distroy.com/">BLOG</a></span>
+                                        --%>
 			            </div>
                                   </div>
         <div id="mainContainer" class="contentWithLeftNav">
