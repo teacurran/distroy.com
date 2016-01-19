@@ -72,17 +72,17 @@ public class Royalties {
 	//    }
 	public void updateRoyalties(Connection con) throws SQLException {
 
-		String sql = "SELECT a.inArtistId, a.vcNameDisplay, a.vcCheckNumber, a.moCheckAmount," +
-			"a.dtCheck, a.dtCreated, a.dtModified, c.moRoyaltiesPaid, c.moRoyaltiesOwed " +
-			"FROM tbArtistRoyalties a\n" +
-			"JOIN tbArtist c ON a.inArtistId=c.inId\n" +
-			"where a.vcCheckNumber = (\n" +
+		String sql = "SELECT r.inArtistId, r.vcNameDisplay, r.vcCheckNumber, r.moCheckAmount," +
+			"r.dtCheck, r.dtCreated, r.dtModified, a.moRoyaltiesPaid, a.moRoyaltiesOwed " +
+			"FROM tbArtistRoyalties r\n" +
+			"JOIN tbArtist a ON r.inArtistId=a.inId\n" +
+			"where r.vcCheckNumber = (\n" +
 				"\tSELECT max(b.vcCheckNumber) " +
 				"\tFROM tbArtistRoyalties b " +
-				"\tWHERE a.inArtistId=b.inArtistId" +
-			") GROUP BY a.vcNameDisplay, a.inArtistId, a.vcCheckNumber, " +
-			"a.moCheckAmount, a.dtCheck, a.dtCreated, a.dtModified, " +
-			"c.moRoyaltiesPaid, c.moRoyaltiesOwed";
+				"\tWHERE r.inArtistId=b.inArtistId" +
+			") GROUP BY r.vcNameDisplay, r.inArtistId, r.vcCheckNumber, " +
+			"r.moCheckAmount, r.dtCheck, r.dtCreated, r.dtModified, " +
+			"a.moRoyaltiesPaid, a.moRoyaltiesOwed";
 
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
