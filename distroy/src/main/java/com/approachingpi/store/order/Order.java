@@ -26,7 +26,7 @@ public class Order implements Serializable {
     public static final int STATUS_DELETED                  = 5;
     public static final int STATUS_MIN                      = 0;
     public static final int STATUS_MAX                      = 5;
-    
+
     public static final int[] STATUS_TYPES = {STATUS_PENDING, STATUS_INCOMPLETE, STATUS_WAITING_PAYMENT, STATUS_PARTIAL_SHIP, STATUS_SHIPPED, STATUS_DELETED};
 
     private static final char[] saltChars = ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray());
@@ -180,17 +180,17 @@ public class Order implements Serializable {
         }
         return totalDue.setScale(2,BigDecimal.ROUND_HALF_EVEN);
 	}
-	public OrderAddress getBillAddress() { 
+	public OrderAddress getBillAddress() {
         if (billAddress == null) {
             billAddress = new OrderAddress();
         }
-        return billAddress; 
+        return billAddress;
     }
-	public String getComment() { 
-            return comment; 
+	public String getComment() {
+            return comment;
             //return com.approachingpi.store.order.OrderComment.getBody2();
         }
-        
+
     public ArrayList getComments() {
         if (comments == null) {
             comments = new ArrayList();
@@ -201,7 +201,7 @@ public class Order implements Serializable {
         ResultSet rs2 = ps2.executeQuery();
         comments = new ArrayList();
         return comments;*/
-        
+
         return comments;
         //Order.loadCommentsFromDb(con);
     }
@@ -246,7 +246,7 @@ public class Order implements Serializable {
         if (shipAddress == null) {
             shipAddress = new OrderAddress();
         }
-    return shipAddress; 
+    return shipAddress;
     }
     public int getShipCount() { return shipCount; }
 	public ShipMethod getShipMethod() { return shipMethod; }
@@ -301,7 +301,7 @@ public class Order implements Serializable {
 		this.getBillAddress().loadFromDb(con);
 		this.getShipAddress().loadFromDb(con);
 	}
-    
+
     public void loadCommentsFromDb(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM tbOrderComment WHERE vcOrderId = ?");
         ps.setString(1,getId());
@@ -314,8 +314,8 @@ public class Order implements Serializable {
         }
         rs.close();
     }
-     
-    // COMMENTING OUT THIS SECTION TO TRY TO LOAD THE COMMENTS FROM THE ORDER TABLE IN prev BLOCK 
+
+    // COMMENTING OUT THIS SECTION TO TRY TO LOAD THE COMMENTS FROM THE ORDER TABLE IN prev BLOCK
     /*
         public void loadCommentsFromDb(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM tbOrder WHERE vcId = ?");
@@ -417,45 +417,34 @@ public class Order implements Serializable {
 
 	    int newOrderId = 0;
 
-	    PreparedStatement ps = con.prepareStatement("IF ((SELECT Count(inId) FROM tbIdOrder WHERE inStoreId=?) > 0) "+
-	        "BEGIN "+
-				"INSERT INTO tbIdOrder (inId, inStoreId, inUserId, vcRandom) "+
+		String sqlStatement = "INSERT INTO tbIdOrder (inId, inStoreId, inUserId, vcRandom) "+
 				"SELECT Max(inId)+1, "+
-				"?,?,? "+
-				"FROM tbIdOrder WHERE inStoreId=? "+
-	        "END ELSE BEGIN "+
-	            "INSERT INTO tbIdOrder (inId, inStoreId, inUserId, vcRandom) "+
-	            "SELECT Count(inId)+1, "+
-	            "?,?,? "+
-	            "FROM tbIdOrder WHERE inStoreId=? "+
-	        "END");
-	    int i=0;
-	    // IF
-	    ps.setInt(++i, getStore().getId());
+				"?,?,? " +
+				"FROM tbIdOrder WHERE inStoreId=?";
+	    PreparedStatement ps = con.prepareStatement(sqlStatement);
 
-	    // BEGIN
-	    ps.setInt(++i, getStore().getId());
-	    ps.setInt(++i, getUser().getId());
-	    ps.setString(++i, randomValue);
-	    ps.setInt(++i, getStore().getId());
+		int i = 0;
 
-	    // ELSE
-	    ps.setInt(++i, getStore().getId());
-	    ps.setInt(++i, getUser().getId());
-	    ps.setString(++i, randomValue);
-	    ps.setInt(++i, getStore().getId());
+		ps.setInt(++i, getStore().getId());
+		ps.setInt(++i, getUser().getId());
+		ps.setString(++i, randomValue);
+		ps.setInt(++i, getStore().getId());
 
-	    ps.execute();
+		ps.execute();
 
-	    ps = con.prepareStatement("SELECT Max(inId) AS inMaxId FROM tbIdOrder WHERE inStoreId=? AND inUserId=? AND vcRandom=?");
-	    ps.setInt(1, getStore().getId());
-	    ps.setInt(2, getUser().getId());
-	    ps.setString(3, randomValue);
-	    ResultSet rs = ps.executeQuery();
-	    if (rs.next()) {
-		    newOrderId = rs.getInt("inMaxId");
-	    }
-	    rs.close();
+		ps = con.prepareStatement("SELECT Max(inId) AS inMaxId\n" +
+			"FROM tbIdOrder\n" +
+			"WHERE inStoreId=?\n" +
+			"AND inUserId=?\n" +
+			"AND vcRandom=?");
+		ps.setInt(1, getStore().getId());
+		ps.setInt(2, getUser().getId());
+		ps.setString(3, randomValue);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			newOrderId = rs.getInt("inMaxId");
+		}
+		rs.close();
 
  	    this.setId(getStore().getAbbreviation()+user.getId() + "-" + newOrderId);
     }
@@ -721,7 +710,7 @@ public class Order implements Serializable {
 	public void setShipMethod(ShipMethod shipMethod) {
 		this.shipMethod = shipMethod;
 	}
-    public void setStatus(int in) { this.status = in; } 
+    public void setStatus(int in) { this.status = in; }
 	public void setStore(Store in) {
 		this.store = in;
 	}
@@ -789,12 +778,12 @@ public class Order implements Serializable {
                 System.err.println("ERROR WRITING ORDER COMMENT:COMMENT=" + thisComment.getBody() + " ORDER=" + this.getId() + " SESSION=" + cart.getSession().getSessionCode() + " USER=" + cart.getSession().getUser().getId());
                 e.printStackTrace();
             }
-        }    
+        }
             for (int i2=0; i2<comments.size(); i2++) {
             OrderComment thisComment = (OrderComment)comments.get(i2);
 
             try {
-                        // test from here 
+                        // test from here
                 StringBuffer sql = new StringBuffer(5000);
                 sql.append("BEGIN\n");
                 sql.append("UPDATE tbOrder SET\n");
@@ -804,21 +793,21 @@ public class Order implements Serializable {
 
                 PreparedStatement ps = con.prepareStatement(sql.toString());
                 int i=0;
-            
-                ps.setString(++i2, thisComment.getBody()); 
-                
+
+                ps.setString(++i2, thisComment.getBody());
+
                 //WHERE
             ps.setString(++i2, this.getId());
             ps.setInt(++i2, this.getUser().getId());
             ps.execute();
-            
-// to here 
+
+// to here
             } catch (Exception e) {
                 System.err.println("ERROR WRITING ORDER COMMENT:COMMENT=" + thisComment.getBody() + " ORDER=" + this.getId() + " SESSION=" + cart.getSession().getSessionCode() + " USER=" + cart.getSession().getUser().getId());
                 e.printStackTrace();
             }
-            
-            
+
+
         }
 		try {
 			cart.clearCart(con);
