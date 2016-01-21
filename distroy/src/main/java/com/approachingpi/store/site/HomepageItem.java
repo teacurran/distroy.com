@@ -24,7 +24,7 @@ public class HomepageItem {
     String blurb                    = "";
     int id;
     String link                     = "";
-    ArrayList productVariations     = new ArrayList();
+    ArrayList<ProductVariation> productVariations     = new ArrayList<>();
     int rank;
     String title                    = "";
 
@@ -156,23 +156,24 @@ public class HomepageItem {
 
 	public void saveProductVariationsToDb(Connection con) throws SQLException {
 		String idList = "0";
-		for (int i=0; i<productVariations.size(); i++) {
-			ProductVariation variation = (ProductVariation)productVariations.get(i);
+		for (ProductVariation productVariation : productVariations) {
+			ProductVariation variation = (ProductVariation) productVariation;
 			idList = idList + "," + variation.getId();
 
-			PreparedStatement ps = con.prepareStatement("IF ((SELECT Count(*) FROM tbLinkHomepageItemProductVariation WHERE inHomepageItemId=? AND inProductVariationId=?) = 0) "+
-			        "BEGIN "+
-			        "INSERT INTO tbLinkHomepageItemProductVariation (inHomepageItemId, inProductVariationId) VALUES (?,?) "+
-			        "END");
-			ps.setInt(1,getId());
-			ps.setInt(2,variation.getId());
-			ps.setInt(3,getId());
-			ps.setInt(4,variation.getId());
+			String sqlStatement = "INSERT INTO tbLinkHomepageItemProductVariation " +
+				"(inHomepageItemId, inProductVariationId) VALUES (?,?)\n" +
+				"ON DUPLICATE KEY UPDATE inHomepageItemId=inHomepageItemId";
+			PreparedStatement ps = con.prepareStatement(sqlStatement);
+
+			ps.setInt(1, getId());
+			ps.setInt(2, variation.getId());
 			ps.execute();
 
 		}
 
-		PreparedStatement ps = con.prepareStatement("DELETE FROM tbLinkHomepageItemProductVariation WHERE inHomepageItemId=? AND inProductVariationId NOT IN(" + idList + ")");
+		PreparedStatement ps = con.prepareStatement("DELETE FROM tbLinkHomepageItemProductVariation \n" +
+			"WHERE inHomepageItemId=? \n" +
+			"AND inProductVariationId NOT IN(" + idList + ")");
 		ps.setInt(1,getId());
 		ps.execute();
 	}

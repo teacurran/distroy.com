@@ -6,19 +6,19 @@ package com.approachingpi.store.servlet.admin;
  * @author Terrence Curran
  */
 
-import com.approachingpi.servlet.PiServlet;
-import com.approachingpi.util.MessageBean;
-import com.approachingpi.store.catalog.Product;
-import com.approachingpi.store.catalog.Image;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.approachingpi.servlet.PiServlet;
+import com.approachingpi.store.catalog.Image;
+import com.approachingpi.util.MessageBean;
 
 public class ImageAssociateServlet extends PiServlet {
 	public static final int ACTION_MAIN             = 0;
@@ -49,14 +49,13 @@ public class ImageAssociateServlet extends PiServlet {
 
 		if (action == ACTION_ADD) {
 			try {
-				ps = con.prepareStatement("IF ((SELECT COUNT(*) FROM tbLinkProductVariationImage WHERE inImageId=? AND inProductVariationId=?) = 0) "+
-				        "BEGIN "+
-				        "INSERT INTO tbLinkProductVariationImage (inImageId, inProductVariationId, inRank) VALUES(?,?,0) "+
-				        "END");
+				String sqlStatement = "INSERT INTO tbLinkProductVariationImage " +
+					"(inImageId, inProductVariationId, inRank) VALUES(?,?,0)\n" +
+					"ON DUPLICATE KEY UPDATE inImageId=inImageId";
+				ps = con.prepareStatement(sqlStatement);
+
             	ps.setInt(1,imageId);
 				ps.setInt(2,productVariationId);
-				ps.setInt(3,imageId);
-				ps.setInt(4,productVariationId);
 				ps.execute();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -84,7 +83,7 @@ public class ImageAssociateServlet extends PiServlet {
                 ps = con.prepareStatement("SELECT * FROM tbLinkProductVariationImage WHERE inProductVariationId = ? ORDER BY inRank");
                 ps.setInt(1,productVariationId);
                 rs = ps.executeQuery();
-            
+
                 int rank = -1;
                 while (rs.next()) {
                     rank++;
@@ -111,7 +110,7 @@ public class ImageAssociateServlet extends PiServlet {
                 ps = con.prepareStatement("SELECT * FROM tbLinkProductVariationImage WHERE inProductVariationId = ? ORDER BY inRank");
                 ps.setInt(1,productVariationId);
                 rs = ps.executeQuery();
-            
+
                 int rank = -1;
                 while (rs.next()) {
                     rank++;
@@ -130,7 +129,7 @@ public class ImageAssociateServlet extends PiServlet {
         }
 
 
-		ArrayList images = new ArrayList();
+		List<Image> images = new ArrayList<>();
 		if (action == ACTION_MAIN) {
 			try {
 				ps = con.prepareStatement("SELECT I.* FROM tbImage I, tbLinkProductVariationImage L WHERE I.inId = L.inImageId AND L.inProductVariationId = ? ORDER BY L.inRank");
