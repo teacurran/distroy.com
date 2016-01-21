@@ -393,7 +393,7 @@ public class CartServlet extends PiServlet {
         req.setAttribute("billing",billing);
 	    req.setAttribute("shipping",shipping);
 	    req.setAttribute("theUser",user);
-        
+
         switch (action) {
             case ACTION_VIEW:
             req.getRequestDispatcher("/jsp/cart/view.jsp").forward(req, res);
@@ -441,24 +441,20 @@ public class CartServlet extends PiServlet {
 			} else if (coupon.getDateEnd().getTime() < GregorianCalendar.getInstance().getTimeInMillis()) {
 				errors.addMessage("The coupon code you entered expired on " + PiUtility.formatDate(coupon.getDateEnd(), "M/d/yyyy"));
 			} else {
-				PreparedStatement ps = con.prepareStatement("IF ((SELECT COUNT(*) FROM tbCartCoupon WHERE inSessionId=? AND vcSessionCode=? AND inUserId=? AND inCouponClaimId=?) = 0)\n"+
-                    "BEGIN\n"+
-                    "INSERT INTO tbCartCoupon (\n"+
-				        "inSessionId, vcSessionCode, inUserId, inCouponClaimId, dtAdded\n"+
-				    ") VALUES (\n"+
-				        "?,?,?,?,CURRENT_TIMESTAMP\n"+
-				    ")\n"+
-                    "END");
-                int i=0;
-				ps.setInt(++i,cart.getSession().getId());
-				ps.setString(++i,cart.getSession().getSessionCode());
-				ps.setInt(++i,cart.getSession().getUser().getId());
-				ps.setInt(++i,claim.getId());
 
-                ps.setInt(++i,cart.getSession().getId());
-				ps.setString(++i,cart.getSession().getSessionCode());
-				ps.setInt(++i,cart.getSession().getUser().getId());
-				ps.setInt(++i,claim.getId());
+				String sqlStatement = "INSERT INTO tbCartCoupon (\n"+
+						"inSessionId, vcSessionCode, inUserId, inCouponClaimId, dtAdded\n"+
+					") VALUES (\n"+
+						"?,?,?,?,CURRENT_TIMESTAMP\n"+
+					") ON DUPLICATE KEY UPDATE inSessionId = inSessionId";
+
+				PreparedStatement ps = con.prepareStatement(sqlStatement);
+				int i = 0;
+
+				ps.setInt(++i, cart.getSession().getId());
+				ps.setString(++i, cart.getSession().getSessionCode());
+				ps.setInt(++i, cart.getSession().getUser().getId());
+				ps.setInt(++i, claim.getId());
 
                 ps.execute();
 			}
