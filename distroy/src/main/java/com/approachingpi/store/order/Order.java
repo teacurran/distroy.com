@@ -496,35 +496,43 @@ public class Order implements Serializable {
 		if (getId().length() == 0) {
 			loadIdFromDb(con);
 		}
-        StringBuffer sql = new StringBuffer(5000);
 
-		sql.append("IF ((SELECT Count(*) FROM tbOrder WHERE vcId=?) > 0) \n");
-		sql.append("BEGIN\n");
-			sql.append("UPDATE tbOrder SET\n");
-			// the commented out fields are either written at time of order only
-			// or are updated via other functions.
-			//sql.append("inStoreId=?, ");
-			//sql.append("inUserId=?, ");
-			//sql.append("inBillId=?, ");
-			//sql.append("inShipId=?, ");
-            sql.append("inStatus=?, ");
-            sql.append("inGiftId=null, ");
-            sql.append("inShipMethodId=?, ");
-            //sql.append("inAffiliateId=?, ");
-            sql.append("vcPO=?,");
-            sql.append("dtModified=CURRENT_TIMESTAMP, ");
-            sql.append("moSubtotal=?, ");
-            sql.append("moTotal=?, ");
-            sql.append("moTotal_Ship=?, ");
-            sql.append("moTotal_Tax=?, ");
-            sql.append("moTotal_Coupon_Product=?, ");
-            sql.append("moTotal_Coupon_Order=?, ");
-            sql.append("moTotal_Coupon_Ship=?, ");
+		StringBuilder sql = new StringBuilder(5000);
 
-            sql.append("moCharged_Subtotal=?, ");
-            sql.append("moCharged_Ship=?, ");
-            sql.append("moCharged_Tax=?, ");
-            sql.append("moCharged_Total=?, ");
+		sql.append("INSERT INTO tbOrder (");
+			sql.append("vcId, inStoreId, inUserId, inStatus, inBillId, ");
+			sql.append("inShipId, inGiftId, inShipMethodId, inAffiliateId, vcPO, dtCreated, ");
+			sql.append("dtModified, moSubtotal, moTotal, moTotal_Ship, moTotal_Tax, ");
+			sql.append("moTotal_Coupon_Product, moTotal_Coupon_Order, moTotal_Coupon_Ship, inShipCount, dtShipBegan, ");
+			sql.append("dtShipComplete, txComments, vcIpAddress, ftTax_Rate, inOrder_Coupon, ");
+			sql.append("inShip_Coupon");
+		sql.append(") VALUES (");
+			sql.append("?,?,?,?,?,");
+			sql.append("?,null,?,?,?,CURRENT_TIMESTAMP,");
+			sql.append("CURRENT_TIMESTAMP,?,?,?,?,");
+			sql.append("?,?,?,0,null,");
+			sql.append("null,?,?,?,?,");
+			sql.append("?");
+		sql.append(")\n");
+		sql.append("ON DUPLICATE KEY UPDATE\n");
+			sql.append("inStatus=?, ");
+			sql.append("inGiftId=null, ");
+			sql.append("inShipMethodId=?, ");
+			//sql.append("inAffiliateId=?, ");
+			sql.append("vcPO=?,");
+			sql.append("dtModified=CURRENT_TIMESTAMP, ");
+			sql.append("moSubtotal=?, ");
+			sql.append("moTotal=?, ");
+			sql.append("moTotal_Ship=?, ");
+			sql.append("moTotal_Tax=?, ");
+			sql.append("moTotal_Coupon_Product=?, ");
+			sql.append("moTotal_Coupon_Order=?, ");
+			sql.append("moTotal_Coupon_Ship=?, ");
+
+			sql.append("moCharged_Subtotal=?, ");
+			sql.append("moCharged_Ship=?, ");
+			sql.append("moCharged_Tax=?, ");
+			sql.append("moCharged_Total=?, ");
 
 			//sql.append("inShipCount=?, ");
 			sql.append("dtShipBegan=?, ");
@@ -535,103 +543,34 @@ public class Order implements Serializable {
 			sql.append("inShip_Coupon=? ");
 			//sql.append("btOrder_Complete=?, ");
 			//sql.append("btDeleted=? \n");
-			sql.append("WHERE vcId = ? AND inStoreId=? AND inUserId=? \n");
-		sql.append("END ELSE BEGIN\n");
-			sql.append("INSERT INTO tbOrder (");
-				sql.append("vcId, inStoreId, inUserId, inStatus, inBillId, ");
-				sql.append("inShipId, inGiftId, inShipMethodId, inAffiliateId, vcPO, dtCreated, ");
-				sql.append("dtModified, moSubtotal, moTotal, moTotal_Ship, moTotal_Tax, ");
-				sql.append("moTotal_Coupon_Product, moTotal_Coupon_Order, moTotal_Coupon_Ship, inShipCount, dtShipBegan, ");
-				sql.append("dtShipComplete, txComments, vcIpAddress, ftTax_Rate, inOrder_Coupon, ");
-                sql.append("inShip_Coupon");
-			sql.append(") VALUES (");
-				sql.append("?,?,?,?,?,");
-				sql.append("?,null,?,?,?,CURRENT_TIMESTAMP,");
-				sql.append("CURRENT_TIMESTAMP,?,?,?,?,");
-				sql.append("?,?,?,0,null,");
-				sql.append("null,?,?,?,?,");
-                sql.append("?");
-			sql.append(")\n");
-		sql.append("END");
 
         PreparedStatement ps = con.prepareStatement(sql.toString());
 		int i=0;
 
-		// IF
-		ps.setString(++i,this.getId());
-
-        // UPDATE
-        ps.setInt(++i, this.getStatus());
-        if (this.getShipMethod() == null) {
-            ps.setNull(++i, Types.INTEGER);
-        } else {
-		    ps.setInt(++i, this.getShipMethod().getId());
-        }
-        ps.setString(++i, this.getPo());
-		ps.setBigDecimal(++i,this.getAmountSubtotal());
-		ps.setBigDecimal(++i,this.getAmountTotal());
-		ps.setBigDecimal(++i,this.getAmountShipping());
-		ps.setBigDecimal(++i,this.getAmountTax());
-		ps.setBigDecimal(++i,this.getAmountCouponProduct());
-		ps.setBigDecimal(++i,this.getAmountCouponOrder());
-		ps.setBigDecimal(++i,this.getAmountCouponShipping());
-
-        ps.setBigDecimal(++i,this.getAmountCapturedSubtotal());
-        ps.setBigDecimal(++i,this.getAmountCapturedShipping());
-        ps.setBigDecimal(++i,this.getAmountCapturedTax());
-        ps.setBigDecimal(++i,this.getAmountCapturedTotal());
-
-        if (getDateShipBegan() == null) {
-            ps.setNull(++i, Types.TIMESTAMP);
-        } else {
-            ps.setTimestamp(++i, new Timestamp(getDateShipBegan().getTime()));
-        }
-        if (getDateShipComplete() == null) {
-            ps.setNull(++i, Types.TIMESTAMP);
-        } else {
-            ps.setTimestamp(++i, new Timestamp(getDateShipComplete().getTime()));
-        }
-		ps.setFloat(++i,this.getTaxRate());
-        if (couponClaimOrder==null) {
-            ps.setNull(++i,Types.INTEGER); // Coupon Order
-        } else {
-            ps.setInt(++i,couponClaimOrder.getId());
-        }
-        if (couponClaimShip==null) {
-    		ps.setNull(++i,Types.INTEGER); // Coupon Shipping
-        } else {
-            ps.setInt(++i,couponClaimShip.getId());
-        }
-
-		// WHERE
-		ps.setString(++i,this.getId());
-		ps.setInt(++i,store.getId());
-		ps.setInt(++i,user.getId());
-
 		// INSERT
-		ps.setString(++i,this.getId());
-		ps.setInt(++i,store.getId());
-		ps.setInt(++i,user.getId());
-        ps.setInt(++i,getStatus());
-        if (getBillAddress() == null) {
-            ps.setNull(++i,Types.INTEGER);
-        } else {
-            ps.setInt(++i,this.getBillAddress().getId());
-        }
-        if (getShipAddress() == null) {
-            ps.setNull(++i,Types.INTEGER);
-        } else {
-            ps.setInt(++i,this.getShipAddress().getId());
-        }
+		ps.setString(++i, this.getId());
+		ps.setInt(++i, store.getId());
+		ps.setInt(++i, user.getId());
+		ps.setInt(++i, getStatus());
+		if (getBillAddress() == null) {
+			ps.setNull(++i, Types.INTEGER);
+		} else {
+			ps.setInt(++i, this.getBillAddress().getId());
+		}
+		if (getShipAddress() == null) {
+			ps.setNull(++i, Types.INTEGER);
+		} else {
+			ps.setInt(++i, this.getShipAddress().getId());
+		}
 
-        if (this.getShipMethod() == null) {
-            ps.setNull(++i, Types.INTEGER);
-        } else {
-            ps.setInt(++i,this.getShipMethod().getId());
-        }
-		ps.setInt(++i,this.getAffiliate().getId());
-        ps.setString(++i, this.getPo());
-		ps.setBigDecimal(++i,this.getAmountSubtotal());
+		if (this.getShipMethod() == null) {
+			ps.setNull(++i, Types.INTEGER);
+		} else {
+			ps.setInt(++i, this.getShipMethod().getId());
+		}
+		ps.setInt(++i, this.getAffiliate().getId());
+		ps.setString(++i, this.getPo());
+		ps.setBigDecimal(++i, this.getAmountSubtotal());
 
 		ps.setBigDecimal(++i,this.getAmountTotal());
 		ps.setBigDecimal(++i,this.getAmountShipping());
@@ -642,24 +581,67 @@ public class Order implements Serializable {
 		ps.setBigDecimal(++i,this.getAmountCouponShipping());
 
 		//ps.setString(++i,this.getComment());
-                ps.setString(++i,this.getComment());
-                System.out.println(this.getComment());
-                System.out.println(this.getComments());
-                //System.out.println(com.approachingpi.store.order.OrderComment.getBody());
+		ps.setString(++i, this.getComment());
+		System.out.println(this.getComment());
+		System.out.println(this.getComments());
+		//System.out.println(com.approachingpi.store.order.OrderComment.getBody());
 
-		ps.setString(++i,this.getIpAddress());
-                System.out.println(this.getIpAddress());
-		ps.setFloat(++i,this.getTaxRate());
-        if (couponClaimOrder==null) {
-            ps.setNull(++i,Types.INTEGER); // Coupon Order
-        } else {
-            ps.setInt(++i,couponClaimOrder.getId());
-        }
-        if (couponClaimShip==null) {
-    		ps.setNull(++i,Types.INTEGER); // Coupon Shipping
-        } else {
-            ps.setInt(++i,couponClaimShip.getId());
-        }
+		ps.setString(++i, this.getIpAddress());
+		System.out.println(this.getIpAddress());
+		ps.setFloat(++i, this.getTaxRate());
+		if (couponClaimOrder == null) {
+			ps.setNull(++i, Types.INTEGER); // Coupon Order
+		} else {
+			ps.setInt(++i, couponClaimOrder.getId());
+		}
+		if (couponClaimShip == null) {
+			ps.setNull(++i, Types.INTEGER); // Coupon Shipping
+		} else {
+			ps.setInt(++i, couponClaimShip.getId());
+		}
+
+		// UPDATE
+		ps.setInt(++i, this.getStatus());
+		if (this.getShipMethod() == null) {
+			ps.setNull(++i, Types.INTEGER);
+		} else {
+			ps.setInt(++i, this.getShipMethod().getId());
+		}
+		ps.setString(++i, this.getPo());
+		ps.setBigDecimal(++i, this.getAmountSubtotal());
+		ps.setBigDecimal(++i, this.getAmountTotal());
+		ps.setBigDecimal(++i, this.getAmountShipping());
+		ps.setBigDecimal(++i, this.getAmountTax());
+		ps.setBigDecimal(++i, this.getAmountCouponProduct());
+		ps.setBigDecimal(++i, this.getAmountCouponOrder());
+		ps.setBigDecimal(++i, this.getAmountCouponShipping());
+
+		ps.setBigDecimal(++i, this.getAmountCapturedSubtotal());
+		ps.setBigDecimal(++i, this.getAmountCapturedShipping());
+		ps.setBigDecimal(++i, this.getAmountCapturedTax());
+		ps.setBigDecimal(++i, this.getAmountCapturedTotal());
+
+		if (getDateShipBegan() == null) {
+			ps.setNull(++i, Types.TIMESTAMP);
+		} else {
+			ps.setTimestamp(++i, new Timestamp(getDateShipBegan().getTime()));
+		}
+		if (getDateShipComplete() == null) {
+			ps.setNull(++i, Types.TIMESTAMP);
+		} else {
+			ps.setTimestamp(++i, new Timestamp(getDateShipComplete().getTime()));
+		}
+		ps.setFloat(++i, this.getTaxRate());
+		if (couponClaimOrder == null) {
+			ps.setNull(++i, Types.INTEGER); // Coupon Order
+		} else {
+			ps.setInt(++i, couponClaimOrder.getId());
+		}
+		if (couponClaimShip == null) {
+			ps.setNull(++i, Types.INTEGER); // Coupon Shipping
+		} else {
+			ps.setInt(++i, couponClaimShip.getId());
+		}
 
 		ps.execute();
 
