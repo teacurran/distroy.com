@@ -33,11 +33,11 @@ public class OrderComment extends PiObject {
     public String getBody() {
     return body;
     }
-    
+
     public String getBody2() {
         return body;
     }
-    
+
     public Date getDate() { return date; }
     public int getId() { return id; }
     public Order getOrder() { return order; }
@@ -54,17 +54,17 @@ public class OrderComment extends PiObject {
 			loadFromRs(rs);
 		}
 		rs.close();
-                
+
 
     }
     public void loadFromRs(ResultSet rs) throws SQLException {
-        
+
          setOrder(new Order(rs.getString("vcOrderId")));
 	setUser(new User(rs.getInt("inUserId")));
         setDate(rs.getTimestamp("dtStamp"));
 	//setPrivate(rs.getInt("boPrivate"));
 	setBody(rs.getString("txBody"));
-        
+
     }
     public void saveToDb(Connection con) throws SQLException {
             if (getId() == 0) {
@@ -72,62 +72,38 @@ public class OrderComment extends PiObject {
             loadFromDb(con);
             //loadIdFromDb(con);
             }
-            
-            StringBuffer sql = new StringBuffer(5000);
 
             //SECTIONS OF THIS SQL STATEMENT ARE COMMENTED OUT BECAUSE IT FAILED TO SAVE THE COMMENT TO THE DB DUE TO A
             //SYNTAX ERROR NEAR WHERE STATEMENT
-            sql.append("IF ((SELECT Count(*) FROM tbOrderComment WHERE inId=?) > 0) \n");
-            sql.append("BEGIN\n");
-            sql.append("UPDATE tbOrderComment SET\n");
-            sql.append("vcOrderId=?, ");
-            sql.append("inUserId=?, ");
-            sql.append("dtStamp=CURRENT_TIMESTAMP, ");
-            sql.append("boPrivate=0, ");
-            sql.append("txBody=? ");
-            sql.append("WHERE inId = ? AND vcOrderId=? AND inUserId=? \n");
-            sql.append("END ELSE BEGIN\n");
-            sql.append("INSERT INTO tbOrderComment (");
-            sql.append("vcOrderId, inUserId, dtStamp, boPrivate, txBody ");
-            sql.append(") VALUES (");
-            sql.append("?,?,CURRENT_TIMESTAMP,0,?");
-            sql.append(")\n");
-            sql.append("END");
-            
-            PreparedStatement ps = con.prepareStatement(sql.toString());
-            int i=0;
-            
-            //IF
-            ps.setInt(++i, this.getId());
-            
-            //UPDATE
-            ps.setString(++i, this.getOrder().getId());
-            if (getUser() == null) {
-                ps.setNull(++i, Types.INTEGER);
-            } else {
-                ps.setInt(++i, this.getUser().getId());
-            }
-            ps.setString(++i, this.getBody());
-            
-            //WHERE
-            ps.setInt(++i, this.getId());
-            ps.setString(++i, this.getOrder().getId());
-            if (getUser() == null) {
-                ps.setNull(++i, Types.INTEGER);
-            } else {
-                ps.setInt(++i, this.getUser().getId());
-            }
+			String sqlStatement = "INSERT INTO tbOrderComment (" +
+				"inId, vcOrderId, inUserId, dtStamp, boPrivate, txBody\n" +
+				") VALUES (?, ?, ?, CURRENT_TIMESTAMP, 0, ?)\n" +
+				"ON DUPLICATE KEY UPDATE\n" +
+				"inUserId=?, dtStamp=CURRENT_TIMESTAMP, boPrivate=0, txBody=?";
 
-            //INSERT
-            ps.setString(++i, this.getOrder().getId());
-            if (getUser() == null) {
-                ps.setNull(++i, Types.INTEGER);
-            } else {
-                ps.setInt(++i, this.getUser().getId());
-            }
-            ps.setString(++i, this.getBody());
-            
-            ps.execute();
+			PreparedStatement ps = con.prepareStatement(sqlStatement);
+			int i = 0;
+
+			//INSERT
+			ps.setInt(++i, this.getId());
+			ps.setString(++i, this.getOrder().getId());
+			if (getUser() == null) {
+				ps.setNull(++i, Types.INTEGER);
+			} else {
+				ps.setInt(++i, this.getUser().getId());
+			}
+			ps.setString(++i, this.getBody());
+
+			//UPDATE
+			if (getUser() == null) {
+				ps.setNull(++i, Types.INTEGER);
+			} else {
+				ps.setInt(++i, this.getUser().getId());
+			}
+			ps.setString(++i, this.getBody());
+
+
+			ps.execute();
     }
 
 
