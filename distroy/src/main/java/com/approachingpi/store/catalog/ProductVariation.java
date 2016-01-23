@@ -341,27 +341,21 @@ public class ProductVariation {
 
             categoryList += "," + cat.getId();
 
-            PreparedStatement ps = con.prepareStatement(""+
-                "IF ((SELECT Count(*) FROM tbLinkProductVariationCategory WHERE inProductVariationId = ? AND inCategoryId = ?) = 0) "+
-                "BEGIN "+
-                    "INSERT INTO tbLinkProductVariationCategory ("+
-                        "inProductVariationId,"+
-                        "inCategoryId,"+
-                        "inRank"+
-                    ") VALUES ("+
-                        "?,?,0"+
-                    ")"+
-                "END");
-            int i=0;
-            // IF
-            ps.setInt(++i,this.getId());
-            ps.setInt(++i,cat.getId());
+			String sqlStatement = "INSERT INTO tbLinkProductVariationCategory ("+
+						"inProductVariationId,"+
+						"inCategoryId,"+
+						"inRank"+
+					") VALUES ("+
+						"?,?,0"+
+					") ON DUPLICATE KEY UPDATE inProductVariationId = inProductVariationId";
 
-            // insert
-            ps.setInt(++i,this.getId());
-            ps.setInt(++i,cat.getId());
+			PreparedStatement ps = con.prepareStatement(sqlStatement);
 
-            ps.execute();
+			// insert
+			ps.setInt(1,this.getId());
+			ps.setInt(2,cat.getId());
+
+			ps.execute();
         }
         // delete any sizes we are not using that are assigned to this variation.
         PreparedStatement ps = con.prepareStatement("DELETE FROM tbLinkProductVariationCategory WHERE inProductVariationId = ? AND inCategoryId NOT IN (" + categoryList + ")");
