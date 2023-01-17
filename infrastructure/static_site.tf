@@ -181,7 +181,7 @@ resource "aws_cloudfront_distribution" "root_s3_distribution" {
   enabled         = true
   is_ipv6_enabled = true
 
-  aliases = [local.domain_name, "cloudfront.${local.domain_name}"]
+  aliases = [local.domain_name]
 
   custom_error_response {
     error_caching_min_ttl = 0
