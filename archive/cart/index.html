@@ -1,0 +1,336 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title>DISTRO.Y :: Shopping Cart</title>
+
+<meta name="keywords" content="apparel, t-shirt, girls, american apparel, shirt, design, baby doll, art, cheap, styleish, style, indie, indy, inexpensive, teeshirts, scene, scenester, tee, clothing, killer, girly, sleeveless, tank, industrial, goth, gothic, hip-hop, tank, gun, pink, black, anime, cute, cartoon, geek, nerd, funny, political, boston, angeldustrial, zazzi, vintage, distroy" />
+
+    <meta name="description" content="Manufacturer and distributor of the best indie designer brands of clothing and t-shirts." />
+
+
+<link rel="stylesheet" type="text/css" href="css/retail.css" />
+<link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/prototip.css" />
+
+
+<script type="text/javascript" src="js/prototype.js"></script>
+<script type='text/javascript' src="js/prototip.js"></script>
+<script type="text/javascript" src="js/effects.js"></script>
+<script type="text/javascript" src="js/accordion.js"></script>
+<script type="text/javascript" src="js/scriptaculous.js%3Fload=effects,builder"></script>
+<script type="text/javascript" src="js/lightbox.js"></script>
+<script type="text/javascript" language="javaScript" SRC="js/util.js"></script>
+<script type="text/javascript" src="js/tabcontent.js"></script>
+
+<script type="text/javascript" language="javascript">
+
+function headerInit() {
+
+
+
+    var contentHeight = ($("mainContainer"). clientHeight) + 230;
+    var leftNavHeight = ($("mainContainer"). clientHeight) + 40;
+    if (contentHeight < 1000) {
+        contentHeight = 1000;
+        leftNavHeight = 1000 - 180;
+    }
+    // alert("old:" + $("shadow1").style.height + " new:" + contentHeight + "px");
+    $("shadow1").style.height = contentHeight + 'px';
+
+        $("leftNav").style.height = leftNavHeight + 'px';
+
+
+}
+
+</script>
+
+    <script type="text/javascript">
+
+		//
+		//  In my case I want to load them onload, this is how you do it!
+		//
+		Event.observe(window, 'load', loadAccordions, false);
+
+		//
+		//	Set up all accordions
+		//
+		function loadAccordions() {
+			/* var topAccordion = new accordion('horizontal_container', {
+				classNames : {
+					toggle : 'horizontal_accordion_toggle',
+					toggleActive : 'horizontal_accordion_toggle_active',
+					content : 'horizontal_accordion_content'
+				},
+				defaultSize : {
+					width : 100
+				},
+				direction : 'horizontal'
+			});
+
+			var bottomAccordion = new accordion('vertical_container'); */
+
+			var nestedVerticalAccordion = new accordion('vertical_nested_container', {
+			  classNames : {
+					toggle : 'vertical_accordion_toggle',
+					toggleActive : 'vertical_accordion_toggle_active',
+					content : 'vertical_accordion_content'
+				}
+			});
+
+			// Open first one: bottomAccordion.activate($$('#vertical_container .accordion_toggle')[0]);
+
+			// Open second one: topAccordion.activate($$('#horizontal_container .horizontal_accordion_toggle')[2]);
+
+                      nestedVerticalAccordion.activate($$('#vertical_nested_container .vertical_accordion_toggle')[1]);
+}
+
+	</script>
+
+</head>
+<body onload="headerInit()" background="img/background.png">
+<!-- <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="headerInit()" background="/img/background.png"> -->
+
+  <div id="shadow1">
+    <div class="shadow2">
+        <div class="head"><a href="index.html"><img src="img/distroy_black.png" alt="distroy" border="0" /></a></div>
+        <div class="headFloat"><img src="img/logo_black.png" alt="distroy" border="0" /></div>
+        <div class="topLinks"><a href="content/support/about.html">ABOUT</a>&nbsp;
+
+
+            . &nbsp;<a href="cart.html">CHECKOUT/VIEW CART</a>&nbsp;
+
+
+        </div>
+
+
+
+
+    <!-- start left nav -->
+
+            <div id="leftNav">
+		<div id="vertical_nested_container">
+        			        <span class="vertical_accordion_toggle">BRANDS</span>
+                			<div class="vertical_accordion_content">
+
+                                                <a href="brands/Angeldustrial.html">Angeldustrial</a><br />
+
+                                                <a href="brands/DISTRO.Y.html">DISTRO.Y</a><br />
+
+                                                <a href="brands/The_Void_Above.html">The Void Above</a><br />
+
+                                                <a href="brands/Zazzi.html">Zazzi</a><br />
+
+		                	</div>
+                                        <span class="vertical_accordion_toggle">CATEGORIES</span>
+			                <div class="vertical_accordion_content">
+
+            <a href="categories/12.html">Womens</a><br />
+
+          <div class="vertical_accordion_content">
+
+            <a href="categories/16.html">Apparel</a><br />
+
+            <a href="categories/17.html">Sale!</a><br />
+
+            <a href="categories/27.html">Knitwear</a><br />
+
+            <a href="categories/29.html">Dresses</a><br />
+         </div>
+            <a href="categories/13.html">Mens / Unisex</a><br />
+
+          <div class="vertical_accordion_content">
+
+            <a href="categories/23.html">Sale!</a><br />
+
+            <a href="categories/28.html">Accessories</a><br />
+         </div>
+            <a href="categories/24.html">New Items</a><br />
+
+</div>
+                                        <span class="vertical_accordion_toggle">SUPPORT</span>
+			                <div class="vertical_accordion_content">
+                                          <a href="content/support/about.html">About</a><br />
+                                          <a href="content/support/policies.html">Policies</a><br />
+                                          <a href="content/support/faqs.html">FAQ's</a><br />
+                                          <a href="content/support/contact.html">Contact Us</a><br />
+                                          <a href="orderstatus.html">Order Status</a><br />
+                                          <!-- <a href="/wholesale">Wholesale</a><br /> -->
+					</div>
+
+                                            <span class="vertical_accordion_notoggle">
+
+                                        <a href="content/links.html">LINKS</a></span>
+                                        <span class="vertical_accordion_notoggle">
+
+                                            <a href="wholesale.html">WHOLESALE</a>
+
+                                        </span>
+                                        <span class="vertical_accordion_notoggle"><a href="http://blog.distroy.com/">BLOG</a></span>
+			            </div>
+                                  </div>
+        <div id="mainContainer" class="contentWithLeftNav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="contentText">
+  <div class="breadCrumb"><a href="index.html">home</a> / <span class="breadCrumbProduct">shopping cart</span></div>
+<br /><br /><br />
+<script language="javascript">
+    function purchase() {
+        document.mainForm.action.value="4";
+        document.mainForm.submit();
+    }
+
+    function updateQty() {
+        document.mainForm.action.value="2";
+        document.mainForm.submit();
+    }
+
+function quantityKeyHandler(event,focusItem) {
+    var event = (event) ? event : ((window.event) ? window.event : "")
+
+    // Up Arrow
+    if (event.keyCode==38) {
+        moveFocusUp(focusItem);
+        event.returnValue = false; // IE
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+        return false;
+    // Down Arrow
+    } else if (event.keyCode==40) {
+        moveFocusDown(focusItem);
+        event.returnValue = false; // IE
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+        return false;
+    // Right Arrow
+    } else if (event.keyCode==39) {
+    }
+}
+
+function moveFocusDown(focusItem) {
+    if (focusItem < 0) {
+        focusItem++;
+        var boxToFocus = document.getElementById("item_" + focusItem);
+        if (boxToFocus) {
+            if (boxToFocus.disabled) {
+                moveFocusDown();
+            } else {
+                boxToFocus.focus();
+                autoSelect(boxToFocus);
+            }
+        }
+    }
+}
+
+function moveFocusUp(focusItem) {
+    if (focusItem > 0) {
+        focusItem--;
+        var boxToFocus = document.getElementById("item_" + focusItem);
+        if (boxToFocus) {
+            if (boxToFocus.disabled) {
+                moveFocusUp();
+            } else {
+                boxToFocus.focus();
+                autoSelect(boxToFocus);
+            }
+        }
+    }
+}
+</script>
+
+
+	<form method="post" action="https://www.distroy.com/cart" name="mainForm">
+
+<input type="hidden" name="action" value="2">
+<input type="hidden" name="fromAction" value="0">
+
+<!-- <div class="pageHead">SHOPPING CART</div> -->
+
+                <b>You currently have no items in your shopping cart.</b>
+
+            <br />
+            <br />
+</form>
+</div>
+
+    </div>
+
+
+        <div class="foot">
+
+            <br />
+        &copy;2023 DISTRO.Y / <a href="http://www.approachingpi.com">Approaching Pi, Inc.</a>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="message_Window" style="position:absolute; width:300; height:600; z-index:20; left:-400px; top:235px; visibility:hidden;">
+<table cellpadding="0" width="300" border="0" cellspacing="0" id="message_Table">
+    <tr>
+        <td width="300" class="messageCell">
+            <table width="100%">
+                <tr>
+                    <td id="message_textTd" class="messageCellText">Please choose a variation and size</td>
+                </tr>
+                <tr>
+                    <td class="messageCellText">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td id="message_textTd" class="messageCellText" style="text-align:center;">
+                        <input type="button" name="button_dismiss" class="button" onClick="closeMessageWindow()" value="OKAY" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</div>
+
+</body>
+</html>
+
+
+
+
