@@ -600,5 +600,15 @@
             %>
         </div>
 
+<%
+for (int i=0; i<images.size(); i++) {
+    Image image = (Image)images.get(i);
+    %>
+    <img src='/productimages/thumb/<%=image.getName().replaceAll(".jpg","")%>/thumb-<%=image.getName().replaceAll(".jpg","")%>-<%=product.getName().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getStyle().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getColor().replaceAll("[^A-Za-z0-9]","_")%>.jpg' />
+    <img src='/productimages/standard/<%=image.getName().replaceAll(".jpg","")%>/std-<%=image.getName().replaceAll(".jpg","")%>-<%=product.getName().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getStyle().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getColor().replaceAll("[^A-Za-z0-9]","_")%>.jpg' />
+    <img src='/productimages/enlarge/<%=image.getName().replaceAll(".jpg","")%>/std-<%=image.getName().replaceAll(".jpg","")%>-<%=product.getName().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getStyle().replaceAll("[^A-Za-z0-9]","_")%>-<%=variation.getColor().replaceAll("[^A-Za-z0-9]","_")%>.jpg' />
+    <%
+}
+%>
 <%@ include file = "./include/footer.jsp"%>
 
